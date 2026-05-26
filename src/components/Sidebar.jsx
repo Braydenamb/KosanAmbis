@@ -3,7 +3,7 @@ import { useCharacter } from '../context/CharacterContext';
 import { Flame, Droplet, Moon, Plus, Minus, User, Shield, Sparkles } from 'lucide-react';
 import KineticCounter from './ui/KineticCounter';
 
-export default function Sidebar() {
+export default function Sidebar({ collapsed = false }) {
   const {
     focusHours,
     waterIntake,
@@ -68,6 +68,40 @@ export default function Sidebar() {
       return capped;
     });
   };
+
+  // Compact Render Mode for Responsive Collapsed State
+  if (collapsed) {
+    return (
+      <aside className="w-full flex flex-col gap-4 items-center">
+        {/* Brand Card - Icon only */}
+        <div className="glass-card p-4 flex items-center justify-center relative overflow-hidden group w-14 h-14" title="KosanAmbis">
+          <Shield className="w-6 h-6 text-brand-600 shrink-0" />
+        </div>
+
+        {/* State - Icon only */}
+        <div className="glass-card p-4 flex items-center justify-center w-14 h-14" title={`Core Operating State: ${statusMode.text}`}>
+          <span className="text-2xl shrink-0">{statusMode.emoji}</span>
+        </div>
+
+        {/* Streak - Icon only */}
+        <div className="glass-card p-4 flex flex-col items-center justify-center w-14 h-14" title={`Streak Integrity: ${streakDays} Days`}>
+          <Flame className="w-6 h-6 text-indigo-500 fill-indigo-400 shrink-0 animate-pulse" />
+        </div>
+
+        {/* Water - Icon only */}
+        <div className="glass-card p-4 flex flex-col items-center justify-center w-14 h-14 gap-1" title={`Water Hydration: ${waterIntake} glasses`}>
+          <Droplet className="w-6 h-6 text-blue-500 shrink-0" />
+          <span className="text-[10px] font-bold font-mono text-slate-600 leading-none">{waterIntake}</span>
+        </div>
+
+        {/* Sleep - Icon only */}
+        <div className="glass-card p-4 flex flex-col items-center justify-center w-14 h-14 gap-1" title={`Sleep Monitors: ${sleepHours} hours`}>
+          <Moon className="w-6 h-6 text-indigo-500 shrink-0" />
+          <span className="text-[10px] font-bold font-mono text-slate-600 leading-none">{sleepHours}</span>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside className="w-full lg:w-80 flex flex-col gap-6">

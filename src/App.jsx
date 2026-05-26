@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CharacterProvider, useCharacter } from './context/CharacterContext';
 import Sidebar from './components/Sidebar';
 import PanelRight from './components/PanelRight';
@@ -21,6 +21,15 @@ function MainAppHub() {
   const { toasts, removeToast, addToast } = useCharacter();
   const { activeTheme, selectTheme, focusMode, setFocusMode, uiMode, toggleUiMode } = useAtmosphere();
 
+  // --- Grid & OS Collapsible Sidebar state ---
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // --- OS Live Clock ---
+  const [currentTime, setCurrentTime] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // --- Category Tabs Navigation ---
   const [activeCategory, setActiveCategory] = useState('overview');
@@ -45,42 +54,86 @@ function MainAppHub() {
       {/* 3. TOAST SYSTEM CONTAINER */}
       <Toast toasts={toasts} removeToast={removeToast} />
 
-      {/* 4. MOBILE RESPONSIVE HEADER BAR */}
-      <header className="xl:hidden flex items-center justify-between p-4 bg-white/45 border-b border-white/60 sticky top-0 z-[100] backdrop-blur-xl">
-        <button 
-          onClick={() => {
-            setShowLeftDrawer(true);
-            setShowRightDrawer(false);
-          }}
-          className="p-2.5 hover:bg-slate-100/60 rounded-xl transition-all text-slate-600 border border-white/50 cursor-pointer"
-          aria-label="Open Side Menu"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
+      {/* ── TOP NAVBAR — World Class OS Interface Bar ── */}
+      <header className="w-full sticky top-0 z-[110] bg-white/60 border-b border-white/75 backdrop-blur-2xl px-6 py-3 flex items-center justify-between transition-all duration-300">
+        
+        {/* Left section: Brand & Collapse triggers */}
+        <div className="flex items-center gap-4">
+          {/* Mobile drawer toggle */}
+          <button 
+            onClick={() => {
+              setShowLeftDrawer(true);
+              setShowRightDrawer(false);
+            }}
+            className="xl:hidden p-2.5 hover:bg-slate-100/60 border border-white/50 rounded-xl transition-all text-slate-600 cursor-pointer animate-pulse"
+            aria-label="Open Side Menu"
+          >
+            <Menu className="w-4 h-4" />
+          </button>
 
-        <div className="flex items-center gap-2 font-mono">
-          <Shield className="w-4 h-4 text-brand-600" />
-          <span className="text-[10px] font-black text-slate-800 tracking-widest uppercase">KOSANAMBIS CORE</span>
+          {/* Desktop collapsible toggle */}
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="hidden xl:flex p-2.5 hover:bg-slate-100/60 border border-slate-200/60 rounded-xl transition-all text-slate-500 hover:text-slate-800 cursor-pointer active:scale-95"
+            title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            <Grid className="w-4 h-4" />
+          </button>
+
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-brand-500/10 rounded-lg border border-brand-500/10">
+              <Shield className="w-4 h-4 text-brand-600" />
+            </div>
+            <div>
+              <span className="font-extrabold text-xs text-slate-800 tracking-tight leading-none">KosanAmbis</span>
+              <span className="text-[8px] text-slate-400 font-extrabold tracking-widest block uppercase font-mono mt-0.5">CORE WORKSPACE</span>
+            </div>
+          </div>
         </div>
 
-        <button 
-          onClick={() => {
-            setShowRightDrawer(true);
-            setShowLeftDrawer(false);
-          }}
-          className="p-2.5 hover:bg-slate-100/60 rounded-xl transition-all text-brand-600 border border-white/50 cursor-pointer"
-          aria-label="Open Stats Menu"
-        >
-          <Grid className="w-5 h-5" />
-        </button>
+        {/* Center section: Global OS Clock & Info */}
+        <div className="hidden md:flex items-center gap-6">
+          <div className="bg-slate-50 border border-slate-200/50 px-4 py-1.5 rounded-2xl flex items-center gap-2.5 text-xs font-bold text-slate-600">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span className="font-mono">
+              {currentTime.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' })}
+            </span>
+            <span className="text-slate-300">|</span>
+            <span className="font-mono font-black text-slate-800">
+              {currentTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+            </span>
+          </div>
+        </div>
+
+        {/* Right section: Global shortcuts & User Profile */}
+        <div className="flex items-center gap-3">
+          {/* Active OS Theme indicator */}
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/40 border border-white/60 rounded-full text-[9px] font-black uppercase font-mono text-slate-500 tracking-wider">
+            🎨 {uiMode === 'neubrutalist' ? 'Neubrutalist OS' : 'Liquid Glass OS'}
+          </span>
+
+          {/* Quick stats right drawer toggle for mobile */}
+          <button 
+            onClick={() => {
+              setShowRightDrawer(true);
+              setShowLeftDrawer(false);
+            }}
+            className="xl:hidden p-2.5 hover:bg-slate-100/60 rounded-xl transition-all text-brand-600 border border-white/50 cursor-pointer"
+            aria-label="Open Stats Menu"
+          >
+            <Grid className="w-4 h-4" />
+          </button>
+        </div>
+
       </header>
 
       {/* 5. MAIN CENTRAL CONTENT LAYOUT CONTAINER */}
-      <div className="max-w-[1600px] w-full mx-auto px-4 py-6 md:px-6 md:py-8 flex flex-col xl:flex-row gap-6 relative z-10 flex-grow">
+      <div className="max-w-[1680px] w-full mx-auto px-4 py-6 md:px-6 md:py-8 flex flex-col xl:flex-row gap-6 relative z-10 flex-grow">
         
         {/* ================= COLUMN 1: SIDEBAR (DESKTOP / MOBILE DRAWER) ================= */}
         <div className={`
-          ${focusMode ? 'xl:hidden' : 'xl:block'} xl:relative xl:translate-x-0 xl:bg-transparent xl:p-0 xl:w-80 xl:h-auto xl:shadow-none xl:z-auto
+          ${focusMode ? 'xl:hidden' : 'xl:block'} xl:relative xl:translate-x-0 xl:bg-transparent xl:p-0 xl:h-auto xl:shadow-none xl:z-auto
+          ${sidebarCollapsed ? 'xl:w-20' : 'xl:w-80'}
           fixed inset-y-0 left-0 w-80 bg-slate-100/95 p-6 z-[120] border-r border-white/60 transition-all duration-300 ease-out transform backdrop-blur-2xl
           ${showLeftDrawer ? 'translate-x-0 shadow-premium' : '-translate-x-full xl:translate-x-0'}
         `}>
@@ -94,7 +147,7 @@ function MainAppHub() {
               <X className="w-4 h-4" />
             </button>
           </div>
-          <Sidebar />
+          <Sidebar collapsed={sidebarCollapsed} />
         </div>
 
         {/* ================= COLUMN 2: CENTER HUB (RPG STATUS & MODULES) ================= */}
@@ -185,40 +238,52 @@ function MainAppHub() {
 
           {/* ================= CONDITIONAL CATEGORIZED TABS CONTENT ================= */}
           {activeCategory === 'overview' && (
-            <div className="flex flex-col gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
               {/* RPG Profile & Interactive bars */}
-              <RPGHeader />
+              <div className="col-span-1 lg:col-span-12">
+                <RPGHeader />
+              </div>
               {/* Device & Market Ecosystem Simulation Command Center */}
-              <EcosystemCommandCenter rainActive={rainActive} />
+              <div className="col-span-1 lg:col-span-12">
+                <EcosystemCommandCenter rainActive={rainActive} />
+              </div>
             </div>
           )}
 
           {activeCategory === 'tapestry' && (
-            <div className="flex flex-col gap-8">
-              <LifeHeatmapCanvas />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+              <div className="col-span-1 lg:col-span-12">
+                <LifeHeatmapCanvas />
+              </div>
             </div>
           )}
 
           {activeCategory === 'productivity' && (
-            <div className="flex flex-col gap-8">
-              {/* Core modules tabs/grid */}
-              <ProductivityModule />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+              <div className="col-span-1 lg:col-span-12">
+                <ProductivityModule />
+              </div>
             </div>
           )}
 
           {activeCategory === 'financials' && (
-            <div className="flex flex-col gap-8">
-              {/* Debt Matrices and Patungan Invoicing */}
-              <FinanceModule />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+              <div className="col-span-1 lg:col-span-12">
+                <FinanceModule />
+              </div>
             </div>
           )}
 
           {activeCategory === 'survival' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full items-start">
               {/* Domestic Logistics */}
-              <SurvivalModule />
+              <div className="col-span-1 lg:col-span-6">
+                <SurvivalModule />
+              </div>
               {/* Social Battery and Laundry trackers */}
-              <SocialModule />
+              <div className="col-span-1 lg:col-span-6">
+                <SocialModule />
+              </div>
             </div>
           )}
 
