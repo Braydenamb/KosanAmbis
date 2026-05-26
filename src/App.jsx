@@ -15,11 +15,14 @@ import { Menu, X, Grid, CloudRain, Shield, BookOpen, Brain, Sparkles } from 'luc
 import './App.css';
 import { useAtmosphere } from './context/AtmosphereContext';
 import AmbientSoundscapePlayer from './components/ui/AmbientSoundscapePlayer';
+import { useNotifications } from './context/NotificationContext';
+import NotificationHub from './components/ui/NotificationHub';
 
 
 function MainAppHub() {
   const { toasts, removeToast, addToast } = useCharacter();
   const { activeTheme, selectTheme, focusMode, setFocusMode, uiMode, toggleUiMode } = useAtmosphere();
+  const { unreadCount } = useNotifications();
 
   // --- Grid & OS Collapsible Sidebar state ---
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -51,8 +54,8 @@ function MainAppHub() {
       {/* 2. ANIMATED CANVAS RAIN OVERLAY */}
       <RainCanvas active={rainActive} />
 
-      {/* 3. TOAST SYSTEM CONTAINER */}
-      <Toast toasts={toasts} removeToast={removeToast} />
+      {/* 3. TOAST SYSTEM CONTAINER (SILENCED BY USER DEMAND) */}
+      {/* <Toast toasts={toasts} removeToast={removeToast} /> */}
 
       {/* ── TOP NAVBAR — World Class OS Interface Bar ── */}
       <header className="w-full sticky top-0 z-[110] bg-white/60 border-b border-white/75 backdrop-blur-2xl px-6 py-3 flex items-center justify-between transition-all duration-300">
@@ -218,7 +221,8 @@ function MainAppHub() {
               { id: 'tapestry', label: '🖼️ Life Tapestry' },
               { id: 'productivity', label: '⚡ Productivity' },
               { id: 'financials', label: '💸 Financials' },
-              { id: 'survival', label: '🍲 Survival & Socials' }
+              { id: 'survival', label: '🍲 Survival & Socials' },
+              { id: 'notifications', label: `🔔 Inbox ${unreadCount > 0 ? `(${unreadCount})` : ''}` }
             ].map(cat => (
               <button
                 key={cat.id}
@@ -283,6 +287,14 @@ function MainAppHub() {
               {/* Social Battery and Laundry trackers */}
               <div className="col-span-1 lg:col-span-6">
                 <SocialModule />
+              </div>
+            </div>
+          )}
+
+          {activeCategory === 'notifications' && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+              <div className="col-span-1 lg:col-span-12">
+                <NotificationHub />
               </div>
             </div>
           )}

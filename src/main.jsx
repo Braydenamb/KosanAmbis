@@ -4,12 +4,15 @@ import './index.css'
 import App from './App.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { AtmosphereProvider } from './context/AtmosphereContext'
+import { NotificationProvider } from './context/NotificationContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary>
       <AtmosphereProvider>
-        <App />
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
       </AtmosphereProvider>
     </ErrorBoundary>
   </StrictMode>,
