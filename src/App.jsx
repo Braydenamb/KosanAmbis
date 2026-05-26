@@ -13,24 +13,27 @@ import EcosystemCommandCenter from './components/dashboard/EcosystemCommandCente
 import LifeHeatmapCanvas from './components/ui/LifeHeatmapCanvas';
 import { Menu, X, Grid, CloudRain, Shield, BookOpen, Brain, Sparkles } from 'lucide-react';
 import './App.css';
+import { useAtmosphere } from './context/AtmosphereContext';
+import AmbientSoundscapePlayer from './components/ui/AmbientSoundscapePlayer';
 
 
 function MainAppHub() {
-  const { toasts, removeToast, addToast, focusMode, setFocusMode } = useCharacter();
+  const { toasts, removeToast, addToast } = useCharacter();
+  const { activeTheme, selectTheme, focusMode, setFocusMode, uiMode, toggleUiMode } = useAtmosphere();
 
 
   // --- Category Tabs Navigation ---
   const [activeCategory, setActiveCategory] = useState('overview');
 
   // --- Theme / Weather Toggles ---
-  const [rainActive, setRainActive] = useState(true);
+  const rainActive = activeTheme === 'rainy-night' || activeTheme === 'storm-mode';
 
   // --- Mobile Drawer Toggles ---
   const [showLeftDrawer, setShowLeftDrawer] = useState(false);
   const [showRightDrawer, setShowRightDrawer] = useState(false);
 
   return (
-    <div className="min-h-screen text-slate-700 flex flex-col relative select-none pb-12 overflow-hidden">
+    <div className={`min-h-screen text-slate-700 flex flex-col relative select-none pb-12 overflow-hidden ${uiMode === 'neubrutalist' ? 'mode-neubrutalist' : 'mode-liquid'}`}>
       
       {/* 1. DYNAMIC PASTEL LIQUID AURORA MESHES */}
       <div className="liquid-mesh-aurora"></div>
@@ -108,13 +111,29 @@ function MainAppHub() {
             <div className="flex items-center gap-2">
               <button 
                 onClick={() => {
-                  setRainActive(!rainActive);
-                  addToast(rainActive ? "☀️ Hujan reda. Cuaca kamar kosan cerah!" : "🌧️ Awan mendung datang. Hujan lofi mulai turun.");
+                  const nextTheme = activeTheme === 'sunny-day' ? 'rainy-night' : 'sunny-day';
+                  selectTheme(nextTheme);
+                  addToast(nextTheme === 'sunny-day' ? "☀️ Hujan reda. Cuaca kamar kosan cerah!" : "🌧️ Awan mendung datang. Hujan lofi mulai turun.");
                 }}
                 className={`px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-wider font-mono flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${rainActive ? 'bg-brand-500/10 border-brand-500 text-brand-600 shadow-glow' : 'bg-white/50 border-slate-200 text-slate-500 hover:text-slate-700'}`}
               >
                 <CloudRain className="w-3.5 h-3.5" />
                 {rainActive ? 'Clear Sky' : 'Rain Chill'}
+              </button>
+
+              {/* Dynamic OS Style Switcher */}
+              <button 
+                onClick={() => {
+                  toggleUiMode();
+                  addToast(uiMode === 'liquid' 
+                    ? "🦖 Mode Neubrutalisme Aktif! Garis hitam tegas & ketukan fisik raw terpasang!" 
+                    : "🌊 Mode Liquid Fluid Aktif! Frosted glassmorphism & pendaran cahaya kembali bersinar."
+                  );
+                }}
+                className={`px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-wider font-mono flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${uiMode === 'neubrutalist' ? 'bg-amber-500/10 border-amber-600 text-amber-700 shadow-glow' : 'bg-white/50 border-slate-200 text-slate-500 hover:text-slate-700'}`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                {uiMode === 'neubrutalist' ? 'NEUBRUTALIST' : 'LIQUID OS'}
               </button>
 
               {/* Study Focus Mode Switch */}
@@ -123,7 +142,7 @@ function MainAppHub() {
                   const nextState = !focusMode;
                   setFocusMode(nextState);
                   if (nextState) {
-                    setRainActive(true);
+                    selectTheme('rainy-night');
                     setActiveCategory('productivity');
                     addToast("🧘 Mode Belajar Ambis Aktif! Sidebar ciut, musik rain chill on, selamat produktif!");
                   } else {
@@ -239,6 +258,9 @@ function MainAppHub() {
           className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[110] xl:hidden"
         />
       )}
+
+      {/* ── Floating Ambient Soundscape Player ── */}
+      <AmbientSoundscapePlayer />
     </div>
   );
 }

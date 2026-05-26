@@ -33,40 +33,121 @@
   --shadow-premium: 0 20px 40px -15px rgba(15, 23, 42, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
 }
 
+:root {
+  /* Default: Liquid Fluid Tokens */
+  --ui-border-width: 1px;
+  --ui-border-color: rgba(255, 255, 255, 0.65);
+  --ui-card-bg: rgba(255, 255, 255, 0.45);
+  --ui-card-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+  --ui-hover-transform: translateY(-2px);
+  --ui-card-hover-bg: rgba(255, 255, 255, 0.55);
+  --ui-border-hover-color: rgba(255, 255, 255, 0.85);
+  --ui-card-hover-shadow: 0 30px 60px -20px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  --ui-card-radius: 1.5rem;
+
+  --ui-btn-radius: 0.875rem;
+  --ui-btn-primary-bg: linear-gradient(135deg, #599eff 0%, #3b7fff 100%);
+  --ui-btn-primary-text: #ffffff;
+  --ui-btn-primary-shadow: 0 8px 20px -6px rgba(59, 127, 255, 0.3);
+  --ui-btn-primary-hover-bg: linear-gradient(135deg, #6ba7ff 0%, #4c8aff 100%);
+  --ui-btn-primary-hover-shadow: 0 12px 28px -6px rgba(59, 127, 255, 0.45);
+  --ui-btn-hover-transform: translateY(-1px);
+  --ui-btn-active-transform: translateY(0) scale(0.97);
+
+  --ui-btn-secondary-bg: rgba(255, 255, 255, 0.6);
+  --ui-btn-secondary-text: #334155;
+  --ui-btn-secondary-hover-bg: rgba(255, 255, 255, 0.95);
+  --ui-btn-secondary-hover-shadow: none;
+
+  --ui-font-weight: 500;
+}
+
+.mode-neubrutalist {
+  /* Neubrutalism Override Tokens */
+  --ui-border-width: 3px;
+  --ui-border-color: #000000;
+  --ui-card-bg: #ffffff;
+  --ui-card-shadow: 4px 4px 0px #000000;
+  --ui-hover-transform: translate(-3px, -3px);
+  --ui-card-hover-bg: #ffffff;
+  --ui-border-hover-color: #000000;
+  --ui-card-hover-shadow: 7px 7px 0px #000000;
+  --ui-card-radius: 0px; /* Rigid Geometry! */
+
+  --ui-btn-radius: 0px;
+  --ui-btn-primary-bg: #facc15; /* Kuning Stabilo */
+  --ui-btn-primary-text: #000000;
+  --ui-btn-primary-shadow: 3px 3px 0px #000000;
+  --ui-btn-primary-hover-bg: #facc15;
+  --ui-btn-primary-hover-shadow: 0px 0px 0px #000000;
+  --ui-btn-hover-transform: translate(2px, 2px);
+  --ui-btn-active-transform: translate(2px, 2px);
+
+  --ui-btn-secondary-bg: #38bdf8; /* Biru Royal/Aqua */
+  --ui-btn-secondary-text: #000000;
+  --ui-btn-secondary-hover-bg: #38bdf8;
+  --ui-btn-secondary-hover-shadow: 0px 0px 0px #000000;
+
+  --ui-font-weight: 750;
+}
+
+/* Kinetic counter animations */
+@keyframes kinetic-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+  100% { transform: scale(1); }
+}
+
+@keyframes kinetic-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-3px); }
+  40%, 80% { transform: translateX(3px); }
+}
+
+.animate-kinetic-pulse {
+  animation: kinetic-pulse 400ms ease-out;
+}
+
+.animate-kinetic-shake {
+  animation: kinetic-shake 400ms ease-out;
+}
+
 @utility glass-card {
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--ui-card-bg);
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  border-radius: 1.5rem; /* 24px organic roundings */
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+  border: var(--ui-border-width) solid var(--ui-border-color);
+  border-radius: var(--ui-card-radius);
+  box-shadow: var(--ui-card-shadow);
   transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
   
   &:hover {
-    background: rgba(255, 255, 255, 0.55);
-    border-color: rgba(255, 255, 255, 0.85);
-    transform: translateY(-2px);
-    box-shadow: 0 30px 60px -20px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+    background: var(--ui-card-hover-bg);
+    border-color: var(--ui-border-hover-color);
+    transform: var(--ui-hover-transform);
+    box-shadow: var(--ui-card-hover-shadow);
   }
 }
 
 @utility glass-card-no-hover {
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--ui-card-bg);
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+  border: var(--ui-border-width) solid var(--ui-border-color);
+  border-radius: var(--ui-card-radius);
+  box-shadow: var(--ui-card-shadow);
+  transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @utility btn-premium-primary {
-  background: linear-gradient(135deg, #599eff 0%, #3b7fff 100%);
-  color: #ffffff;
+  background: var(--ui-btn-primary-bg);
+  color: var(--ui-btn-primary-text);
+  border: var(--ui-border-width) solid var(--ui-border-color);
+  border-radius: var(--ui-btn-radius);
   font-weight: 600;
   padding: 0.6rem 1.2rem;
-  border-radius: 0.875rem;
   transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 20px -6px rgba(59, 127, 255, 0.3);
+  box-shadow: var(--ui-btn-primary-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,24 +155,24 @@
   cursor: pointer;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 12px 28px -6px rgba(59, 127, 255, 0.45);
-    background: linear-gradient(135deg, #6ba7ff 0%, #4c8aff 100%);
+    transform: var(--ui-btn-hover-transform);
+    box-shadow: var(--ui-btn-primary-hover-shadow);
+    background: var(--ui-btn-primary-hover-bg);
   }
   
   &:active {
-    transform: translateY(0) scale(0.97);
+    transform: var(--ui-btn-active-transform);
   }
 }
 
 @utility btn-premium-secondary {
-  background: rgba(255, 255, 255, 0.6);
-  color: #334155;
+  background: var(--ui-btn-secondary-bg);
+  color: var(--ui-btn-secondary-text);
   font-weight: 500;
   padding: 0.6rem 1.2rem;
-  border-radius: 0.875rem;
+  border-radius: var(--ui-btn-radius);
   transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: var(--ui-border-width) solid var(--ui-border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,12 +180,14 @@
   cursor: pointer;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(15, 23, 42, 0.15);
+    background: var(--ui-btn-secondary-hover-bg);
+    border-color: var(--ui-border-hover-color);
+    transform: var(--ui-btn-hover-transform);
+    box-shadow: var(--ui-btn-secondary-hover-shadow);
   }
   
   &:active {
-    transform: scale(0.97);
+    transform: var(--ui-btn-active-transform);
   }
 }
 

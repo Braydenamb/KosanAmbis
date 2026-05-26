@@ -1,6 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { generateYearlyData } from '../../utils/heatmapMockGenerator';
 import JournalDetailModal from './JournalDetailModal';
+import KineticCounter from './KineticCounter';
+import { useCharacter } from '../../context/CharacterContext';
+import { useAtmosphere } from '../../context/AtmosphereContext';
 import { 
   Palette, LayoutGrid, Compass, Wind, Sun, CloudSnow, 
   Leaf, Sliders, Info, Eye, Download, Keyboard, EyeOff,
@@ -8,6 +11,8 @@ import {
 } from 'lucide-react';
 
 export default function LifeHeatmapCanvas() {
+  const { uiMode } = useAtmosphere();
+
   // --- 1. CONFIG & SYSTEM STATE ---
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -19,7 +24,7 @@ export default function LifeHeatmapCanvas() {
   
   // Interactive View States
   const [layout, setLayout] = useState('grid'); // 'grid' | 'radial' | 'ribbon'
-  const [visualMode, setVisualMode] = useState('liquid'); // 'liquid' | 'neubrutalist'
+  const visualMode = uiMode; // Map globally to Adaptive OS state
   const [seasonFilter, setSeasonFilter] = useState('spring'); // 'spring' | 'summer' | 'autumn' | 'winter'
   const [zoomScale, setZoomScale] = useState(1);
   const [colorblindMode, setColorblindMode] = useState(false);
@@ -883,7 +888,7 @@ export default function LifeHeatmapCanvas() {
                 ].map(m => (
                   <button
                     key={m.id}
-                    onClick={() => setVisualMode(m.id)}
+                    onClick={() => setUiMode(m.id)}
                     className={`flex-grow py-2.5 px-3 rounded-2xl border text-[10px] font-black uppercase tracking-wider font-mono transition-all active:scale-95 cursor-pointer ${visualMode === m.id ? 'bg-slate-900 border-slate-950 text-white shadow-lg' : 'bg-white/60 border-slate-200/50 text-slate-500 hover:text-slate-800 hover:bg-white'}`}
                   >
                     {m.label}
@@ -967,7 +972,7 @@ export default function LifeHeatmapCanvas() {
                   <Flame className="w-3.5 h-3.5 text-emerald-500 fill-emerald-500/10" />
                 </div>
                 <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  {stats.totalFocusHours} <span className="text-[9px] font-semibold text-slate-400">Hrs</span>
+                  <KineticCounter value={stats.totalFocusHours} /> <span className="text-[9px] font-semibold text-slate-400">Hrs</span>
                 </div>
                 <span className="text-[8px] font-bold text-slate-400 mt-1 block">Tapestry Deep Focus</span>
               </div>
@@ -979,7 +984,7 @@ export default function LifeHeatmapCanvas() {
                   <Award className="w-3.5 h-3.5 text-indigo-500" />
                 </div>
                 <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  {stats.habitConsistency}%
+                  <KineticCounter value={stats.habitConsistency} />%
                 </div>
                 <span className="text-[8px] font-bold text-slate-400 mt-1 block">Routine Integrity</span>
               </div>
@@ -991,7 +996,7 @@ export default function LifeHeatmapCanvas() {
                   <Moon className="w-3.5 h-3.5 text-indigo-550" />
                 </div>
                 <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  {stats.averageSleep} <span className="text-[9px] font-semibold text-slate-400">Hrs</span>
+                  <KineticCounter value={stats.averageSleep} /> <span className="text-[9px] font-semibold text-slate-400">Hrs</span>
                 </div>
                 <span className="text-[8px] font-bold text-slate-400 mt-1 block">Avg Sleep Rest</span>
               </div>
@@ -1003,7 +1008,7 @@ export default function LifeHeatmapCanvas() {
                   <Smile className="w-3.5 h-3.5 text-emerald-500" />
                 </div>
                 <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  {stats.averageMood}% <span className="text-[9px] font-semibold text-slate-400">Good</span>
+                  <KineticCounter value={stats.averageMood} />% <span className="text-[9px] font-semibold text-slate-400">Good</span>
                 </div>
                 <span className="text-[8px] font-bold text-slate-400 mt-1 block">Sanity Index</span>
               </div>

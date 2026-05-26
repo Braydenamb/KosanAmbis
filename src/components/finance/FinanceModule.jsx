@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCharacter } from '../../context/CharacterContext';
 import { Landmark, Check, Copy, Users, Settings } from 'lucide-react';
+import KineticCounter from '../ui/KineticCounter';
 
 export default function FinanceModule() {
   const {
@@ -89,7 +90,7 @@ export default function FinanceModule() {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 text-[10px] text-slate-400 mt-2 font-semibold font-mono">
-                      <span>AMT: <strong className="text-slate-700">{formatCurrency(bill.amount)}</strong></span>
+                      <span>AMT: <strong className="text-slate-700"><KineticCounter value={formatCurrency(bill.amount)} /></strong></span>
                       <span>•</span>
                       <span>DUE: <strong className="text-slate-700">{bill.daysLeft} days</strong></span>
                     </div>
@@ -171,7 +172,7 @@ export default function FinanceModule() {
           <div>
             <span className="text-[8px] font-black text-brand-600 uppercase tracking-widest font-mono">SHARE PER MEMBER</span>
             <div className="text-base font-extrabold text-slate-800 mt-1 leading-none">
-              {formatCurrency(splitResult)}
+              <KineticCounter value={formatCurrency(splitResult)} />
             </div>
           </div>
           

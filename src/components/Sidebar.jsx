@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCharacter } from '../context/CharacterContext';
 import { Flame, Droplet, Moon, Plus, Minus, User, Shield, Sparkles } from 'lucide-react';
+import KineticCounter from './ui/KineticCounter';
 
 export default function Sidebar() {
   const {
@@ -111,7 +112,9 @@ export default function Sidebar() {
               <Flame className="w-7 h-7 text-indigo-500 fill-indigo-400" />
             </div>
             <div>
-              <div className="text-xl font-extrabold text-slate-800 leading-none">{streakDays} Days</div>
+              <div className="text-xl font-extrabold text-slate-800 leading-none">
+                <KineticCounter value={streakDays} /> Days
+              </div>
               <div className="text-[9px] font-bold text-slate-400 mt-2 block font-mono">CONSISTENCY STATUS</div>
             </div>
           </div>
@@ -151,8 +154,8 @@ export default function Sidebar() {
           </button>
           
           <div className="text-center">
-            <div className="text-xl font-extrabold text-slate-800 leading-none">
-              {waterIntake} <span className="text-[10px] font-normal text-slate-400">/ 8 gls</span>
+            <div className="text-xl font-extrabold text-slate-800 leading-none font-mono">
+              <KineticCounter value={waterIntake} /> <span className="text-[10px] font-normal text-slate-404">/ 8 gls</span>
             </div>
           </div>
 
@@ -193,8 +196,8 @@ export default function Sidebar() {
           </button>
           
           <div className="text-center">
-            <div className="text-xl font-extrabold text-slate-800 leading-none">
-              {sleepHours} <span className="text-xs font-normal text-slate-400">Hrs</span>
+            <div className="text-xl font-extrabold text-slate-800 leading-none font-mono">
+              <KineticCounter value={sleepHours} /> <span className="text-xs font-normal text-slate-400">Hrs</span>
             </div>
           </div>
 

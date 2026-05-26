@@ -88,10 +88,6 @@ export function CharacterProvider({ children }) {
     { id: 3, title: "20 Jam Fokus = Beli McD Share Box", hoursNeeded: 20, unlocked: false, icon: "🍔" }
   ]));
 
-  // --- Student Focus Mode ---
-  const [focusMode, setFocusMode] = useState(() => loadLocally('ankos_focus_mode', false));
-
-
   // --- Toasts system ---
   const [toasts, setToasts] = useState([]);
   const addToast = (message) => {
@@ -151,9 +147,7 @@ export function CharacterProvider({ children }) {
   useEffect(() => {
     window.localStorage.setItem('ankos_rewards_rpg', JSON.stringify(rewards));
   }, [rewards]);
-  useEffect(() => {
-    window.localStorage.setItem('ankos_focus_mode', JSON.stringify(focusMode));
-  }, [focusMode]);
+
 
 
   // --- Dynamic RPG Parameter Computations ---
@@ -230,7 +224,7 @@ export function CharacterProvider({ children }) {
       quickNotes, setQuickNotes,
       rewards, setRewards,
       toasts, removeToast, addToast,
-      focusMode, setFocusMode,
+
 
 
       // Calculated values

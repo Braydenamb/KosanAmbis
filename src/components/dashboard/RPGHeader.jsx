@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCharacter } from '../../context/CharacterContext';
 import { Shield, Activity, Wallet, Camera, X, Check, Globe } from 'lucide-react';
+import KineticCounter from '../ui/KineticCounter';
 
 export default function RPGHeader() {
   const {
@@ -86,7 +87,7 @@ export default function RPGHeader() {
           </button>
           
           <div className="absolute -bottom-2 -right-2 bg-slate-900 text-white text-[9px] font-bold px-2 py-0.5 rounded-lg border border-white/50 select-none font-mono">
-            Lvl {characterLevel}
+            Lvl <KineticCounter value={characterLevel} />
           </div>
         </div>
 
@@ -107,7 +108,7 @@ export default function RPGHeader() {
                 style={{ width: `${xpIntoCurrentLevel}%` }}
               />
             </div>
-            <span className="text-[8px] font-black text-slate-500 select-none font-mono">XP {xpIntoCurrentLevel}/100</span>
+            <span className="text-[8px] font-black text-slate-500 select-none font-mono">XP <KineticCounter value={xpIntoCurrentLevel} />/100</span>
           </div>
         </div>
       </div>
@@ -121,7 +122,7 @@ export default function RPGHeader() {
               <Shield className="w-3.5 h-3.5 text-blue-500" />
               INTELLIGENCE ENERGY
             </span>
-            <span className="text-slate-800">{hp}%</span>
+            <span className="text-slate-800"><KineticCounter value={hp} />%</span>
           </div>
           <div className="w-full bg-slate-200/50 rounded-full h-2.5 overflow-hidden p-[1px] border border-white/50">
             <div 
@@ -141,7 +142,7 @@ export default function RPGHeader() {
               <Activity className="w-3.5 h-3.5 text-indigo-500" />
               SANITY INDEX
             </span>
-            <span className="text-slate-800">{sanity}%</span>
+            <span className="text-slate-800"><KineticCounter value={sanity} />%</span>
           </div>
           <div className="w-full bg-slate-200/50 rounded-full h-2.5 overflow-hidden p-[1px] border border-white/50">
             <div 
@@ -165,7 +166,7 @@ export default function RPGHeader() {
           </div>
           
           <div className="text-base font-black text-slate-800 tracking-tight leading-none mt-2">
-            {formattedWallet}
+            <KineticCounter value={formattedWallet} />
           </div>
 
           <span className="text-[8px] opacity-80 font-black select-none uppercase tracking-wider font-mono mt-1">
