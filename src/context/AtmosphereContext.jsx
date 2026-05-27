@@ -14,12 +14,25 @@ class AmbientSynthEngine {
   }
 
   init() {
-    if (this.ctx) return;
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    this.ctx = new AudioCtx();
-    this.mainGain = this.ctx.createGain();
-    this.mainGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
-    this.mainGain.connect(this.ctx.destination);
+    if (this.ctx) {
+      if (this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+      return;
+    }
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AudioCtx();
+      this.mainGain = this.ctx.createGain();
+      this.mainGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
+      this.mainGain.connect(this.ctx.destination);
+      
+      if (this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+    } catch (e) {
+      console.warn("Failed to initialize AudioContext:", e);
+    }
   }
 
   setVolume(vol) {
