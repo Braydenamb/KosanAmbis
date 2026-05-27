@@ -90,12 +90,26 @@ function AutomationHubTab() {
 
 function MainAppHub() {
   const { toasts, removeToast, addToast } = useCharacter();
-  const { activeTheme, selectTheme, focusMode, setFocusMode, uiMode, toggleUiMode, particleMode } = useAtmosphere();
+  const { activeTheme, selectTheme, focusMode, setFocusMode, uiMode, toggleUiMode, particleMode, playClick } = useAtmosphere();
   const { unreadCount } = useNotifications();
   const rainActive = activeTheme === 'rainy-night' || activeTheme === 'storm-mode';
 
   // --- Grid & OS Collapsible Sidebar state ---
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // --- Satisfying tactile UI click feedback ---
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      const target = e.target;
+      if (!target) return;
+      const interactiveEl = target.closest('button, a, [role="button"], .cursor-pointer');
+      if (interactiveEl) {
+        playClick();
+      }
+    };
+    window.addEventListener('click', handleGlobalClick, { capture: true, passive: true });
+    return () => window.removeEventListener('click', handleGlobalClick, { capture: true });
+  }, [playClick]);
 
   // --- OS Live Clock ---
   const [currentTime, setCurrentTime] = useState(new Date());

@@ -419,6 +419,31 @@ class AmbientSynthEngine {
 
     this.nodes.whiteSource = source;
   }
+
+  /* ── Tactile Satisfying click sound effect ── */
+  playClick() {
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      // Satisfying organic mechanical pop/click sweep
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(900, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(400, this.ctx.currentTime + 0.03);
+
+      gain.gain.setValueAtTime(0.0, this.ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.022, this.ctx.currentTime + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.06);
+
+      osc.connect(gain);
+      gain.connect(this.mainGain || this.ctx.destination);
+
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.08);
+    } catch (e) {}
+  }
 }
 
 const atmosphericPresets = {
@@ -668,6 +693,9 @@ export function AtmosphereProvider({ children }) {
         stopAudio: () => {
           engineRef.current.stopAll();
           setIsPlaying(false);
+        },
+        playClick: () => {
+          engineRef.current.playClick();
         }
       }}
     >
