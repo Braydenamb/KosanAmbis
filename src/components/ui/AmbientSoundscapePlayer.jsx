@@ -40,7 +40,7 @@ export default function AmbientSoundscapePlayer() {
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-[var(--z-overlay,100)] flex flex-col items-end gap-3"
+      className="fixed bottom-6 right-6 z-[250] flex flex-col items-end gap-3"
       role="region"
       aria-label="Ambient soundscape and atmosphere settings"
     >
@@ -49,7 +49,17 @@ export default function AmbientSoundscapePlayer() {
         <div
           className="w-80 ds-card p-5 flex flex-col gap-4 animate-slide-up shadow-2xl"
           style={{
-            background: 'var(--c-bg-card-active, rgba(255, 255, 255, 0.70))',
+            background: uiMode === 'neubrutalist' 
+              ? '#ffffff' 
+              : activeTheme === 'sunny-day' 
+              ? 'rgba(255, 255, 255, 0.94)'
+              : activeTheme === 'rainy-night'
+              ? 'rgba(240, 253, 244, 0.95)'
+              : activeTheme === 'clear-night'
+              ? 'rgba(245, 243, 255, 0.95)'
+              : activeTheme === 'storm-mode'
+              ? 'rgba(255, 241, 242, 0.95)'
+              : 'rgba(255, 247, 237, 0.95)',
             borderColor: 'var(--c-accent-active, var(--c-border))',
             transition: 'all 0.4s var(--ease-out)',
             backdropFilter: 'blur(32px) saturate(200%)'
@@ -131,7 +141,7 @@ export default function AmbientSoundscapePlayer() {
                     className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl border text-[11px] font-semibold cursor-pointer transition-all
                       ${isActive
                         ? 'bg-slate-50 border-slate-300 shadow-sm font-bold'
-                        : 'bg-slate-100/30 border-slate-200/50 hover:bg-slate-100/50 text-slate-700'}`}
+                        : 'bg-slate-100/70 border-slate-300/40 hover:bg-slate-100 text-slate-700'}`}
                   >
                     <t.icon className={`w-3.5 h-3.5 ${t.color}`} />
                     <span style={{ color: isActive ? 'var(--c-accent-active)' : 'inherit' }}>{t.label}</span>
@@ -156,7 +166,7 @@ export default function AmbientSoundscapePlayer() {
                     className={`flex items-center gap-2.5 p-2 rounded-xl border transition-all text-left cursor-pointer
                       ${isActive
                         ? 'border-slate-300 bg-slate-50 shadow-sm'
-                        : 'border-slate-200/60 bg-slate-100/30 hover:bg-slate-100/50 text-slate-700'}`}
+                        : 'border-slate-200/80 bg-slate-100/70 hover:bg-slate-100 text-slate-700'}`}
                   >
                     <div className={`p-1.5 rounded-lg border transition-all
                       ${isActive ? 'bg-slate-900 text-slate-50 border-slate-400/20' : 'bg-slate-100 text-slate-500 border-slate-200/40'}`}>
@@ -173,7 +183,7 @@ export default function AmbientSoundscapePlayer() {
           </div>
 
           {/* Audio Visualizer & Level Slider */}
-          <div className="bg-slate-100/30 border rounded-2xl p-3 flex flex-col gap-2.5" style={{ borderColor: 'var(--c-border-active, var(--c-border))' }}>
+          <div className="bg-slate-100/70 border rounded-2xl p-3 flex flex-col gap-2.5" style={{ borderColor: 'var(--c-border-active, var(--c-border))' }}>
             {/* Midnight volume protective warning badge */}
             {isMidnightProtected && (
               <div className="bg-amber-500/10 border border-amber-500/35 rounded-xl px-2 py-1 flex items-center justify-between animate-pulse">
