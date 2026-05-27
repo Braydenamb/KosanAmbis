@@ -111,7 +111,7 @@ function MainAppHub() {
   const [showRightDrawer, setShowRightDrawer] = useState(false);
 
   return (
-    <div className={`min-h-screen text-slate-700 flex flex-col relative select-none pb-12 overflow-hidden ${uiMode === 'neubrutalist' ? 'mode-neubrutalist' : 'mode-liquid'}`}>
+    <div className={`min-h-screen text-slate-700 flex flex-col relative select-none pb-28 overflow-hidden ${uiMode === 'neubrutalist' ? 'mode-neubrutalist' : 'mode-liquid'}`}>
       
       {/* 1. DYNAMIC PASTEL LIQUID AURORA MESHES */}
       <div className="liquid-mesh-aurora"></div>
@@ -233,177 +233,54 @@ function MainAppHub() {
           <Sidebar collapsed={sidebarCollapsed} />
         </div>
 
-        {/* ================= COLUMN 2: CENTER HUB (RPG STATUS & MODULES) ================= */}
-        <div className={`flex-1 min-w-0 flex flex-col gap-6 transition-all duration-300 ease-in-out ${focusMode ? 'xl:max-w-4xl mx-auto w-full' : ''}`}>
+        {/* ================= COLUMN 2: CENTER HUB ================= */}
+        <div className={`flex-1 min-w-0 flex flex-col gap-4 transition-all duration-300 ease-in-out ${focusMode ? 'xl:max-w-5xl mx-auto w-full' : ''}`}>
 
-          
-          {/* Weather & Music Controller Bar */}
-          <div className="glass-card-no-hover p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs border border-white/80">
-            <div className="flex items-center gap-2.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-brand-500 animate-ping"></span>
-              <span className="font-extrabold text-slate-600 font-mono tracking-wider text-[9px] uppercase">Ambient Weather Controller</span>
-            </div>
 
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => {
-                  const nextTheme = activeTheme === 'sunny-day' ? 'rainy-night' : 'sunny-day';
-                  selectTheme(nextTheme);
-                  addToast(nextTheme === 'sunny-day' ? "☀️ Hujan reda. Cuaca kamar kosan cerah!" : "🌧️ Awan mendung datang. Hujan lofi mulai turun.");
-                }}
-                className={`px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-wider font-mono flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${rainActive ? 'bg-brand-500/10 border-brand-500 text-brand-600 shadow-glow' : 'bg-white/50 border-slate-200 text-slate-500 hover:text-slate-700'}`}
-              >
-                <CloudRain className="w-3.5 h-3.5" />
-                {rainActive ? 'Clear Sky' : 'Rain Chill'}
-              </button>
+          {/* ═══ PAGE CONTENT AREA (full-width, dock handles nav) ═══ */}
+          <div className="flex-1 min-w-0 flex flex-col gap-6">
 
-              {/* Dynamic OS Style Switcher */}
-              <button 
-                onClick={() => {
-                  toggleUiMode();
-                  addToast(uiMode === 'liquid' 
-                    ? "🦖 Mode Neubrutalisme Aktif! Garis hitam tegas & ketukan fisik raw terpasang!" 
-                    : "🌊 Mode Liquid Fluid Aktif! Frosted glassmorphism & pendaran cahaya kembali bersinar."
-                  );
-                }}
-                className={`px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-wider font-mono flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${uiMode === 'neubrutalist' ? 'bg-amber-500/10 border-amber-600 text-amber-700 shadow-glow' : 'bg-white/50 border-slate-200 text-slate-500 hover:text-slate-700'}`}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                {uiMode === 'neubrutalist' ? 'NEUBRUTALIST' : 'LIQUID OS'}
-              </button>
-
-              {/* Study Focus Mode Switch */}
-              <button 
-                onClick={() => {
-                  const nextState = !focusMode;
-                  setFocusMode(nextState);
-                  if (nextState) {
-                    selectTheme('rainy-night');
-                    setActiveCategory('productivity');
-                    addToast("🧘 Mode Belajar Ambis Aktif! Sidebar ciut, musik rain chill on, selamat produktif!");
-                  } else {
-                    addToast("😌 Keluar dari Mode Ambis. Selamat bersantai!");
-                  }
-                }}
-                className={`px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-wider font-mono flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${focusMode ? 'bg-indigo-650 border-indigo-600 text-white shadow-glow' : 'bg-white/50 border-slate-200 text-slate-500 hover:text-slate-700'}`}
-              >
-                <Brain className="w-3.5 h-3.5 animate-pulse" />
-                {focusMode ? 'Focus Active' : 'Study Focus'}
-              </button>
-            </div>
-
-          </div>
-
-          {/* ================= CATEGORY COCKPIT NAVIGATION BAR ================= */}
-          <div className="glass-card-no-hover p-3 flex gap-2 border border-white/85 overflow-x-auto whitespace-nowrap scrollbar-thin select-none">
-            {[
-              { id: 'overview', label: '🌐 Overview' },
-              { id: 'tapestry', label: '🖼️ Life Tapestry' },
-              { id: 'productivity', label: '⚡ Productivity' },
-              { id: 'financials', label: '💸 Financials' },
-              { id: 'survival', label: '🍲 Survival & Socials' },
-              { id: 'automation', label: '🤖 Automation Hub' },
-              { id: 'analytics', label: '🔮 AI Analyst' },
-              { id: 'notifications', label: `🔔 Inbox ${unreadCount > 0 ? `(${unreadCount})` : ''}` }
-            ].map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  setActiveCategory(cat.id);
-                }}
-                className={`px-5 py-2.5 rounded-2xl text-xs md:text-sm font-extrabold uppercase tracking-wider font-sans cursor-pointer transition-all active:scale-95 duration-300 ${
-                  activeCategory === cat.id 
-                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-950/20' 
-                    : 'bg-white/50 border border-slate-200/40 text-slate-500 hover:text-slate-800 hover:bg-white'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* ================= CONDITIONAL CATEGORIZED TABS CONTENT ================= */}
-          {activeCategory === 'overview' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-              {/* Zero-Friction Quick Add Bar */}
-              <div className="col-span-1 lg:col-span-12">
-                <QuickAddBar />
+            {/* ── OVERVIEW ── */}
+            {activeCategory === 'overview' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                <div className="col-span-1 lg:col-span-12"><QuickAddBar /></div>
+                <div className="col-span-1 lg:col-span-12"><RPGHeader /></div>
+                <div className="col-span-1 lg:col-span-12"><InsightPanel /></div>
+                <div className="col-span-1 lg:col-span-12"><EcosystemCommandCenter rainActive={rainActive} /></div>
               </div>
-              {/* RPG Profile & Interactive bars */}
-              <div className="col-span-1 lg:col-span-12">
-                <RPGHeader />
+            )}
+            {activeCategory === 'tapestry' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                <div className="col-span-1 lg:col-span-12"><LifeHeatmapCanvas /></div>
               </div>
-              {/* AI Life Insights Panel */}
-              <div className="col-span-1 lg:col-span-12">
-                <InsightPanel />
+            )}
+            {activeCategory === 'productivity' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                <div className="col-span-1 lg:col-span-12"><ProductivityModule /></div>
               </div>
-              {/* Device & Market Ecosystem Simulation Command Center */}
-              <div className="col-span-1 lg:col-span-12">
-                <EcosystemCommandCenter rainActive={rainActive} />
+            )}
+            {activeCategory === 'financials' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                <div className="col-span-1 lg:col-span-12"><QuickAddBar /></div>
+                <div className="col-span-1 lg:col-span-12"><FinanceModule /></div>
               </div>
-            </div>
-          )}
+            )}
+            {activeCategory === 'survival' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full items-start">
+                <div className="col-span-1 lg:col-span-6"><SurvivalModule /></div>
+                <div className="col-span-1 lg:col-span-6"><SocialModule /></div>
+              </div>
+            )}
+            {activeCategory === 'notifications' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+                <div className="col-span-1 lg:col-span-12"><NotificationHub /></div>
+              </div>
+            )}
+            {activeCategory === 'automation' && <AutomationHubTab />}
+            {activeCategory === 'analytics' && <PredictiveIntelligenceHub />}
 
-          {activeCategory === 'tapestry' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-              <div className="col-span-1 lg:col-span-12">
-                <LifeHeatmapCanvas />
-              </div>
-            </div>
-          )}
-
-          {activeCategory === 'productivity' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-              <div className="col-span-1 lg:col-span-12">
-                <ProductivityModule />
-              </div>
-            </div>
-          )}
-
-          {activeCategory === 'financials' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-              {/* NLP Quick Add — primary entry point in finance tab */}
-              <div className="col-span-1 lg:col-span-12">
-                <QuickAddBar />
-              </div>
-              <div className="col-span-1 lg:col-span-12">
-                <FinanceModule />
-              </div>
-            </div>
-          )}
-
-          {activeCategory === 'survival' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full items-start">
-              {/* Domestic Logistics */}
-              <div className="col-span-1 lg:col-span-6">
-                <SurvivalModule />
-              </div>
-              {/* Social Battery and Laundry trackers */}
-              <div className="col-span-1 lg:col-span-6">
-                <SocialModule />
-              </div>
-            </div>
-          )}
-
-          {activeCategory === 'notifications' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-              <div className="col-span-1 lg:col-span-12">
-                <NotificationHub />
-              </div>
-            </div>
-          )}
-
-          {/* =================== AUTOMATION HUB TAB =================== */}
-          {activeCategory === 'automation' && (
-            <AutomationHubTab />
-          )}
-
-          {/* =================== PREDICTIVE INTEL TAB =================== */}
-          {activeCategory === 'analytics' && (
-            <PredictiveIntelligenceHub />
-          )}
-
-        </div>
+          </div>{/* end PAGE CONTENT */}
+        </div>{/* end COLUMN 2 */}
 
         {/* ================= COLUMN 3: PANEL RIGHT (STATS & DOMESTIC MODULES) ================= */}
         <div className={`
@@ -439,6 +316,158 @@ function MainAppHub() {
           className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[110] xl:hidden"
         />
       )}
+
+      {/* ══════════════════════════════════════════════════════════════
+           FLOATING BOTTOM DOCK  —  Dash-to-Dock style
+      ══════════════════════════════════════════════════════════════ */}
+      <div
+        className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[200]"
+        id="floating-dock"
+      >
+        <div className="flex items-end gap-1 px-3 py-2.5
+                        bg-white/30 backdrop-blur-2xl
+                        border border-white/60
+                        rounded-2xl shadow-2xl shadow-slate-900/15
+                        dock-container">
+          {[
+            { id: 'overview',      emoji: '🌐', label: 'Overview' },
+            { id: 'tapestry',      emoji: '🖼️', label: 'Life Tapestry' },
+            { id: 'productivity',  emoji: '⚡', label: 'Productivity' },
+            { id: 'financials',    emoji: '💸', label: 'Financials' },
+            { id: 'survival',      emoji: '🍲', label: 'Survival' },
+            { id: 'automation',    emoji: '🤖', label: 'Automation' },
+            { id: 'analytics',     emoji: '🔮', label: 'AI Analyst' },
+            { id: 'notifications', emoji: '🔔', label: 'Inbox' },
+          ].map((cat, idx, arr) => (
+            <React.Fragment key={cat.id}>
+              {/* Separator before Inbox */}
+              {cat.id === 'notifications' && (
+                <div className="w-px h-8 bg-white/40 mx-0.5 self-center shrink-0" />
+              )}
+              <button
+                id={`dock-${cat.id}`}
+                onClick={() => setActiveCategory(cat.id)}
+                title={cat.label}
+                className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
+              >
+                {/* Tooltip */}
+                <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
+                                bg-slate-900/90 text-white text-[9px] font-black font-mono
+                                px-2 py-1 rounded-lg whitespace-nowrap
+                                opacity-0 group-hover:opacity-100
+                                -translate-y-1 group-hover:translate-y-0
+                                transition-all duration-150 pointer-events-none
+                                border border-white/10 backdrop-blur-sm">
+                  {cat.label}
+                  {cat.id === 'notifications' && unreadCount > 0 && (
+                    <span className="ml-1 text-rose-400">({unreadCount})</span>
+                  )}
+                </div>
+
+                {/* Icon pill */}
+                <div className={`dock-icon relative flex items-center justify-center
+                                  w-10 h-10 rounded-xl transition-all duration-200
+                                  ${activeCategory === cat.id
+                                    ? 'bg-slate-900 shadow-lg shadow-slate-900/30 scale-110'
+                                    : 'bg-white/50 hover:bg-white/80'
+                                  }`}>
+                  <span className="text-xl leading-none select-none">{cat.emoji}</span>
+
+                  {/* Unread badge */}
+                  {cat.id === 'notifications' && unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5
+                                     rounded-full bg-rose-500 text-white text-[7px]
+                                     font-black font-mono flex items-center justify-center
+                                     border border-white shadow-sm">
+                      {unreadCount}
+                    </span>
+                  )}
+                </div>
+
+                {/* Active dot */}
+                <div className={`mt-1 w-1 h-1 rounded-full transition-all duration-200
+                                  ${activeCategory === cat.id
+                                    ? 'bg-brand-500 scale-100 opacity-100'
+                                    : 'scale-0 opacity-0'
+                                  }`} />
+              </button>
+            </React.Fragment>
+          ))}
+
+          {/* ── Separator + Ambient Controls ── */}
+          <div className="w-px h-8 bg-white/40 mx-0.5 self-center shrink-0" />
+
+          {/* Rain Toggle */}
+          <button
+            onClick={() => {
+              const nextTheme = activeTheme === 'sunny-day' ? 'rainy-night' : 'sunny-day';
+              selectTheme(nextTheme);
+              addToast(nextTheme === 'sunny-day' ? "☀️ Cuaca cerah!" : "🌧️ Rain chill on.");
+            }}
+            title={rainActive ? 'Clear Sky' : 'Rain Chill'}
+            className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
+          >
+            <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
+                            bg-slate-900/90 text-white text-[9px] font-black font-mono
+                            px-2 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100
+                            -translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none
+                            border border-white/10 backdrop-blur-sm">
+              {rainActive ? 'Clear Sky' : 'Rain Chill'}
+            </div>
+            <div className={`dock-icon flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200
+                              ${rainActive ? 'bg-brand-500/20 text-brand-600' : 'bg-white/50 text-slate-500 hover:bg-white/80'}`}>
+              <CloudRain className="w-5 h-5" />
+            </div>
+            <div className="mt-1 w-1 h-1 rounded-full opacity-0" />
+          </button>
+
+          {/* UI Mode Toggle */}
+          <button
+            onClick={() => { toggleUiMode(); addToast(uiMode === 'liquid' ? "🦖 Neubrutalist!" : "🌊 Liquid OS!"); }}
+            title={uiMode === 'neubrutalist' ? 'Switch to Liquid OS' : 'Switch to Neubrutalist'}
+            className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
+          >
+            <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
+                            bg-slate-900/90 text-white text-[9px] font-black font-mono
+                            px-2 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100
+                            -translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none
+                            border border-white/10 backdrop-blur-sm">
+              {uiMode === 'neubrutalist' ? '→ Liquid OS' : '→ Neubrutalist'}
+            </div>
+            <div className={`dock-icon flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200
+                              ${uiMode === 'neubrutalist' ? 'bg-amber-500/20 text-amber-600' : 'bg-white/50 text-slate-500 hover:bg-white/80'}`}>
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="mt-1 w-1 h-1 rounded-full opacity-0" />
+          </button>
+
+          {/* Focus Mode Toggle */}
+          <button
+            onClick={() => {
+              const nextState = !focusMode;
+              setFocusMode(nextState);
+              if (nextState) { selectTheme('rainy-night'); setActiveCategory('productivity'); addToast("🧘 Focus mode aktif!"); }
+              else { addToast("😌 Keluar focus mode."); }
+            }}
+            title={focusMode ? 'Exit Focus Mode' : 'Study Focus Mode'}
+            className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
+          >
+            <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
+                            bg-slate-900/90 text-white text-[9px] font-black font-mono
+                            px-2 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100
+                            -translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none
+                            border border-white/10 backdrop-blur-sm">
+              {focusMode ? 'Exit Focus' : 'Study Focus'}
+            </div>
+            <div className={`dock-icon flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200
+                              ${focusMode ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white/50 text-slate-500 hover:bg-white/80'}`}>
+              <Brain className="w-5 h-5" />
+            </div>
+            <div className={`mt-1 w-1 h-1 rounded-full transition-all duration-200 ${focusMode ? 'bg-indigo-500 opacity-100' : 'scale-0 opacity-0'}`} />
+          </button>
+
+        </div>
+      </div>
 
       {/* ── Floating Ambient Soundscape Player ── */}
       <AmbientSoundscapePlayer />
