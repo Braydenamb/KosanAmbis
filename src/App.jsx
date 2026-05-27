@@ -12,6 +12,7 @@ import Toast from './components/Toast';
 import EcosystemCommandCenter from './components/dashboard/EcosystemCommandCenter';
 import LifeHeatmapCanvas from './components/ui/LifeHeatmapCanvas';
 import { Menu, X, Grid, CloudRain, Shield, Brain, Sparkles, Zap, Bot, Heart, GitCommit } from 'lucide-react';
+import FloatingDock from './components/ui/FloatingDock';
 import './App.css';
 import { useAtmosphere } from './context/AtmosphereContext';
 import AmbientSoundscapePlayer from './components/ui/AmbientSoundscapePlayer';
@@ -317,157 +318,40 @@ function MainAppHub() {
         />
       )}
 
-      {/* ══════════════════════════════════════════════════════════════
-           FLOATING BOTTOM DOCK  —  Dash-to-Dock style
-      ══════════════════════════════════════════════════════════════ */}
-      <div
-        className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[200]"
-        id="floating-dock"
-      >
-        <div className="flex items-end gap-1 px-3 py-2.5
-                        bg-white/30 backdrop-blur-2xl
-                        border border-white/60
-                        rounded-2xl shadow-2xl shadow-slate-900/15
-                        dock-container">
-          {[
-            { id: 'overview',      emoji: '🌐', label: 'Overview' },
-            { id: 'tapestry',      emoji: '🖼️', label: 'Life Tapestry' },
-            { id: 'productivity',  emoji: '⚡', label: 'Productivity' },
-            { id: 'financials',    emoji: '💸', label: 'Financials' },
-            { id: 'survival',      emoji: '🍲', label: 'Survival' },
-            { id: 'automation',    emoji: '🤖', label: 'Automation' },
-            { id: 'analytics',     emoji: '🔮', label: 'AI Analyst' },
-            { id: 'notifications', emoji: '🔔', label: 'Inbox' },
-          ].map((cat, idx, arr) => (
-            <React.Fragment key={cat.id}>
-              {/* Separator before Inbox */}
-              {cat.id === 'notifications' && (
-                <div className="w-px h-8 bg-white/40 mx-0.5 self-center shrink-0" />
-              )}
-              <button
-                id={`dock-${cat.id}`}
-                onClick={() => setActiveCategory(cat.id)}
-                title={cat.label}
-                className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
-              >
-                {/* Tooltip */}
-                <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
-                                bg-slate-900/90 text-white text-[9px] font-black font-mono
-                                px-2 py-1 rounded-lg whitespace-nowrap
-                                opacity-0 group-hover:opacity-100
-                                -translate-y-1 group-hover:translate-y-0
-                                transition-all duration-150 pointer-events-none
-                                border border-white/10 backdrop-blur-sm">
-                  {cat.label}
-                  {cat.id === 'notifications' && unreadCount > 0 && (
-                    <span className="ml-1 text-rose-400">({unreadCount})</span>
-                  )}
-                </div>
-
-                {/* Icon pill */}
-                <div className={`dock-icon relative flex items-center justify-center
-                                  w-10 h-10 rounded-xl transition-all duration-200
-                                  ${activeCategory === cat.id
-                                    ? 'bg-slate-900 shadow-lg shadow-slate-900/30 scale-110'
-                                    : 'bg-white/50 hover:bg-white/80'
-                                  }`}>
-                  <span className="text-xl leading-none select-none">{cat.emoji}</span>
-
-                  {/* Unread badge */}
-                  {cat.id === 'notifications' && unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5
-                                     rounded-full bg-rose-500 text-white text-[7px]
-                                     font-black font-mono flex items-center justify-center
-                                     border border-white shadow-sm">
-                      {unreadCount}
-                    </span>
-                  )}
-                </div>
-
-                {/* Active dot */}
-                <div className={`mt-1 w-1 h-1 rounded-full transition-all duration-200
-                                  ${activeCategory === cat.id
-                                    ? 'bg-brand-500 scale-100 opacity-100'
-                                    : 'scale-0 opacity-0'
-                                  }`} />
-              </button>
-            </React.Fragment>
-          ))}
-
-          {/* ── Separator + Ambient Controls ── */}
-          <div className="w-px h-8 bg-white/40 mx-0.5 self-center shrink-0" />
-
-          {/* Rain Toggle */}
-          <button
-            onClick={() => {
-              const nextTheme = activeTheme === 'sunny-day' ? 'rainy-night' : 'sunny-day';
-              selectTheme(nextTheme);
-              addToast(nextTheme === 'sunny-day' ? "☀️ Cuaca cerah!" : "🌧️ Rain chill on.");
-            }}
-            title={rainActive ? 'Clear Sky' : 'Rain Chill'}
-            className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
-          >
-            <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
-                            bg-slate-900/90 text-white text-[9px] font-black font-mono
-                            px-2 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100
-                            -translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none
-                            border border-white/10 backdrop-blur-sm">
-              {rainActive ? 'Clear Sky' : 'Rain Chill'}
-            </div>
-            <div className={`dock-icon flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200
-                              ${rainActive ? 'bg-brand-500/20 text-brand-600' : 'bg-white/50 text-slate-500 hover:bg-white/80'}`}>
-              <CloudRain className="w-5 h-5" />
-            </div>
-            <div className="mt-1 w-1 h-1 rounded-full opacity-0" />
-          </button>
-
-          {/* UI Mode Toggle */}
-          <button
-            onClick={() => { toggleUiMode(); addToast(uiMode === 'liquid' ? "🦖 Neubrutalist!" : "🌊 Liquid OS!"); }}
-            title={uiMode === 'neubrutalist' ? 'Switch to Liquid OS' : 'Switch to Neubrutalist'}
-            className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
-          >
-            <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
-                            bg-slate-900/90 text-white text-[9px] font-black font-mono
-                            px-2 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100
-                            -translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none
-                            border border-white/10 backdrop-blur-sm">
-              {uiMode === 'neubrutalist' ? '→ Liquid OS' : '→ Neubrutalist'}
-            </div>
-            <div className={`dock-icon flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200
-                              ${uiMode === 'neubrutalist' ? 'bg-amber-500/20 text-amber-600' : 'bg-white/50 text-slate-500 hover:bg-white/80'}`}>
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div className="mt-1 w-1 h-1 rounded-full opacity-0" />
-          </button>
-
-          {/* Focus Mode Toggle */}
-          <button
-            onClick={() => {
-              const nextState = !focusMode;
-              setFocusMode(nextState);
-              if (nextState) { selectTheme('rainy-night'); setActiveCategory('productivity'); addToast("🧘 Focus mode aktif!"); }
-              else { addToast("😌 Keluar focus mode."); }
-            }}
-            title={focusMode ? 'Exit Focus Mode' : 'Study Focus Mode'}
-            className="dock-item group relative flex flex-col items-center cursor-pointer select-none"
-          >
-            <div className="dock-tooltip absolute bottom-full mb-2 left-1/2 -translate-x-1/2
-                            bg-slate-900/90 text-white text-[9px] font-black font-mono
-                            px-2 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100
-                            -translate-y-1 group-hover:translate-y-0 transition-all duration-150 pointer-events-none
-                            border border-white/10 backdrop-blur-sm">
-              {focusMode ? 'Exit Focus' : 'Study Focus'}
-            </div>
-            <div className={`dock-icon flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-200
-                              ${focusMode ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white/50 text-slate-500 hover:bg-white/80'}`}>
-              <Brain className="w-5 h-5" />
-            </div>
-            <div className={`mt-1 w-1 h-1 rounded-full transition-all duration-200 ${focusMode ? 'bg-indigo-500 opacity-100' : 'scale-0 opacity-0'}`} />
-          </button>
-
-        </div>
-      </div>
+      {/* ── FLOATING BOTTOM DOCK ── */}
+      <FloatingDock
+        items={[
+          // ── Navigation ──
+          { id: 'overview',      emoji: '🌐', label: 'Overview',      active: activeCategory === 'overview',      onClick: () => setActiveCategory('overview'),      type: 'nav' },
+          { id: 'tapestry',      emoji: '🖼️', label: 'Life Tapestry', active: activeCategory === 'tapestry',      onClick: () => setActiveCategory('tapestry'),      type: 'nav' },
+          { id: 'productivity',  emoji: '⚡', label: 'Productivity',  active: activeCategory === 'productivity',  onClick: () => setActiveCategory('productivity'),  type: 'nav' },
+          { id: 'financials',    emoji: '💸', label: 'Financials',    active: activeCategory === 'financials',    onClick: () => setActiveCategory('financials'),    type: 'nav' },
+          { id: 'survival',      emoji: '🍲', label: 'Survival',      active: activeCategory === 'survival',      onClick: () => setActiveCategory('survival'),      type: 'nav' },
+          { id: 'automation',    emoji: '🤖', label: 'Automation',    active: activeCategory === 'automation',    onClick: () => setActiveCategory('automation'),    type: 'nav' },
+          { id: 'analytics',     emoji: '🔮', label: 'AI Analyst',    active: activeCategory === 'analytics',     onClick: () => setActiveCategory('analytics'),     type: 'nav' },
+          { id: 'notifications', emoji: '🔔', label: 'Inbox',         active: activeCategory === 'notifications', onClick: () => setActiveCategory('notifications'), type: 'nav',
+            badge: unreadCount },
+          // ── Tools ──
+          {
+            id: 'rain', icon: <CloudRain />, label: rainActive ? 'Clear Sky' : 'Rain Chill',
+            active: rainActive, activeColor: 'rgba(99,102,241,0.18)',
+            onClick: () => { const t = activeTheme === 'sunny-day' ? 'rainy-night' : 'sunny-day'; selectTheme(t); addToast(t === 'sunny-day' ? '☀️ Cuaca cerah!' : '🌧️ Rain chill on.'); },
+            type: 'tool',
+          },
+          {
+            id: 'uimode', icon: <Sparkles />, label: uiMode === 'neubrutalist' ? '→ Liquid OS' : '→ Neubrutalist',
+            active: uiMode === 'neubrutalist', activeColor: 'rgba(245,158,11,0.18)',
+            onClick: () => { toggleUiMode(); addToast(uiMode === 'liquid' ? '🦖 Neubrutalist!' : '🌊 Liquid OS!'); },
+            type: 'tool',
+          },
+          {
+            id: 'focus', icon: <Brain />, label: focusMode ? 'Exit Focus' : 'Study Focus',
+            active: focusMode, activeColor: 'rgba(99,102,241,0.85)',
+            onClick: () => { const n = !focusMode; setFocusMode(n); if (n) { selectTheme('rainy-night'); setActiveCategory('productivity'); addToast('🧘 Focus aktif!'); } else addToast('😌 Keluar focus.'); },
+            type: 'tool',
+          },
+        ]}
+      />
 
       {/* ── Floating Ambient Soundscape Player ── */}
       <AmbientSoundscapePlayer />
