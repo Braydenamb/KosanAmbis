@@ -112,7 +112,9 @@ function MainAppHub() {
   const [showRightDrawer, setShowRightDrawer] = useState(false);
 
   return (
-    <div className={`min-h-screen text-slate-700 flex flex-col relative select-none pb-28 overflow-hidden ${uiMode === 'neubrutalist' ? 'mode-neubrutalist' : 'mode-liquid'}`}>
+    <div className={`min-h-screen text-slate-700 flex flex-col relative select-none
+      pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-28
+      overflow-hidden ${uiMode === 'neubrutalist' ? 'mode-neubrutalist' : 'mode-liquid'}`}>
       
       {/* 1. DYNAMIC PASTEL LIQUID AURORA MESHES */}
       <div className="liquid-mesh-aurora"></div>
