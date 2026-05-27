@@ -34,17 +34,19 @@ export default function FloatingDock({ items = [] }) {
           hidden on md and above
       ═══════════════════════════════════════════════ */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-[200] md:hidden"
-        style={{
-          background: 'rgba(255,255,255,0.88)',
-          backdropFilter: 'blur(24px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-          borderTop: '1px solid rgba(255,255,255,0.6)',
-          boxShadow: '0 -4px 24px rgba(15,23,42,0.08)',
-          paddingBottom: 'env(safe-area-inset-bottom)',
-        }}
+        id="floating-dock-mobile"
+        className="fixed bottom-4 left-0 right-0 flex justify-center z-[200] md:hidden px-4"
       >
-        <div className="flex items-stretch">
+        <div
+          style={{
+            background: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            border: '1.5px solid rgba(255,255,255,0.4)',
+            boxShadow: '0 8px 32px rgba(15,23,42,0.12), 0 1px 0 rgba(255,255,255,0.6) inset',
+          }}
+          className="flex items-center justify-around gap-1 px-3 py-1.5 rounded-2xl w-full max-w-md"
+        >
           {mobileItems.map(item => (
             <MobileTab key={item.id} item={item} />
           ))}
@@ -65,24 +67,19 @@ function MobileTab({ item }) {
   return (
     <button
       onClick={item.onClick}
-      className="flex-1 flex flex-col items-center justify-center gap-0.5 py-2 min-h-[56px] cursor-pointer select-none relative focus:outline-none active:scale-95 transition-transform duration-100"
+      className="flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer select-none relative focus:outline-none active:scale-90 transition-transform duration-100"
       aria-label={item.label}
-      style={{ minWidth: 0 }}
+      style={{
+        background: item.active ? 'rgba(99,102,241,0.1)' : 'transparent',
+        transition: 'background 0.2s',
+      }}
     >
-      {/* Active indicator line at top */}
-      {item.active && (
-        <span
-          className="absolute top-0 left-1/2 -translate-x-1/2 rounded-b-full"
-          style={{ width: 28, height: 3, background: '#6366f1', boxShadow: '0 2px 8px rgba(99,102,241,0.4)' }}
-        />
-      )}
-
       {/* Icon */}
-      <div className="relative flex items-center justify-center" style={{ width: 28, height: 28 }}>
+      <div className="relative flex items-center justify-center" style={{ width: 24, height: 24 }}>
         {item.emoji ? (
           <span
             className="leading-none select-none transition-all duration-200"
-            style={{ fontSize: item.active ? 22 : 18 }}
+            style={{ fontSize: item.active ? 20 : 18 }}
           >
             {item.emoji}
           </span>
@@ -90,8 +87,8 @@ function MobileTab({ item }) {
           <span
             style={{
               display: 'flex',
-              width: 22,
-              height: 22,
+              width: 18,
+              height: 18,
               color: item.active ? '#6366f1' : '#94a3b8',
               transition: 'color 0.15s',
             }}
@@ -103,33 +100,26 @@ function MobileTab({ item }) {
         {/* Badge */}
         {item.badge > 0 && (
           <span
-            className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5 rounded-full bg-rose-500 text-white font-black font-mono flex items-center justify-center border-2 border-white leading-none"
-            style={{ fontSize: 7 }}
+            className="absolute -top-1 -right-1 min-w-[14px] h-3.5 px-0.5 rounded-full bg-rose-500 text-white font-black font-mono flex items-center justify-center border border-white leading-none text-[7px]"
           >
             {item.badge > 9 ? '9+' : item.badge}
           </span>
         )}
       </div>
 
-      {/* Label */}
+      {/* Active Dot */}
       <span
         style={{
-          fontSize: 9.5,
-          fontWeight: 900,
-          fontFamily: 'monospace',
-          letterSpacing: '0.02em',
-          color: item.active ? '#6366f1' : '#94a3b8',
-          transition: 'color 0.15s',
-          lineHeight: 1,
-          maxWidth: '100%',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          paddingInline: 2,
+          display: 'block',
+          width: item.active ? 4 : 0,
+          height: item.active ? 4 : 0,
+          marginTop: 2,
+          borderRadius: '50%',
+          background: '#6366f1',
+          opacity: item.active ? 1 : 0,
+          transition: 'width 0.2s ease, height 0.2s ease, opacity 0.2s ease',
         }}
-      >
-        {item.label.split(' ')[0]}
-      </span>
+      />
     </button>
   );
 }
@@ -171,7 +161,7 @@ function DesktopDock({ navItems, toolItems }) {
   return (
     <div
       id="floating-dock"
-      className="hidden md:flex fixed bottom-5 left-1/2 -translate-x-1/2 z-[200]"
+      className="hidden md:flex fixed bottom-5 left-0 right-0 justify-center z-[200]"
     >
       <div
         ref={dockRef}
