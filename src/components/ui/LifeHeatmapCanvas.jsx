@@ -742,354 +742,231 @@ export default function LifeHeatmapCanvas() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-6" ref={containerRef}>
-      
+    <div className="w-full flex flex-col gap-4" ref={containerRef}>
+
       {/* Screen Reader Log */}
-      <div className="sr-only" aria-live="assertive" role="log">
-        {srAnnouncement}
-      </div>
+      <div className="sr-only" aria-live="assertive" role="log">{srAnnouncement}</div>
 
-      {/* Main 2-Column Responsive Studio Layout */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-        
-        {/* ================= LEFT COLUMN: ART GALLERY TAPESTRY (xl:col-span-8) ================= */}
-        <div className="xl:col-span-8 flex flex-col gap-6">
-          
-          <div className="glass-card-no-hover p-6 md:p-8 flex flex-col gap-6 border border-white/85">
-            
-            {/* Gallery Info Header */}
-            <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-              <div>
-                <span className="text-[10px] font-black text-slate-405 uppercase tracking-widest font-mono block">Museum Frame Gallery</span>
-                <h3 className="text-base md:text-lg font-black text-slate-800 flex items-center gap-2 mt-1 uppercase tracking-wide font-sans">
-                  <Palette className="w-5 h-5 text-indigo-500" />
-                  Personal Life Tapestry Canvas
-                </h3>
-              </div>
-              <kbd className="hidden lg:inline-flex items-center gap-1 px-2.5 py-1 text-[9px] font-black text-slate-400 bg-white/60 border border-slate-200 rounded-lg font-mono">
-                <Keyboard className="w-3 h-3" /> Keyboard Nav
-              </kbd>
-            </div>
+      {/* ═══════════════════════════════════════════════════════════════
+          MAIN CARD — Full-width hero canvas with integrated controls
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="glass-card-no-hover flex flex-col gap-0 border border-white/85 overflow-hidden">
 
-            {/* Immersive interactive Canvas Viewport Frame */}
-            <div className="flex flex-col gap-4">
-              <div 
-                className={`w-full bg-white/35 border border-white/65 rounded-[2rem] relative overflow-hidden flex items-center justify-center min-h-[350px] transition-all duration-500 ease-out select-none ${getAmbientAuraClass()}`}
-                onKeyDown={handleKeyDown}
-                tabIndex={0}
-                aria-label="Generative Life Heatmap Canvas. Gunakan tombol panah keyboard untuk menavigasi."
-              >
-                <canvas
-                  ref={canvasRef}
-                  onMouseMove={handleMouseMove}
-                  onMouseLeave={handleMouseLeave}
-                  onClick={handleCanvasClick}
-                  className="w-full h-full cursor-crosshair transition-all duration-300"
-                  style={{ 
-                    width: canvasDimensions.width, 
-                    height: canvasDimensions.height 
-                  }}
-                />
+        {/* ── TOP BAR: Title + Controls (all inline) ── */}
+        <div className="flex flex-wrap items-center gap-2 px-5 py-3.5 border-b border-slate-100/70">
 
-                {/* RICH HOVER INTERACTIVE TOOLTIP */}
-                {hoveredDay && (
-                  <div 
-                    className="absolute z-[150] pointer-events-none bg-white/95 border rounded-2xl p-4 shadow-premium text-xs text-slate-800 max-w-[240px] transform -translate-x-1/2 -translate-y-full transition-all duration-200 ease-out flex flex-col gap-2.5"
-                    style={{ 
-                      left: tooltipPos.x, 
-                      top: tooltipPos.y,
-                      borderColor: toRgbaStr(calculateCompositeColor(hoveredDay.day), 0.5),
-                      backdropFilter: 'blur(16px)',
-                      boxShadow: `0 15px 30px -10px ${toRgbaStr(calculateCompositeColor(hoveredDay.day), 0.15)}`
-                    }}
-                  >
-                    <div className="flex justify-between items-center border-b border-slate-100 pb-1.5 shrink-0">
-                      <span className="font-extrabold text-slate-850 font-mono tracking-tight">{hoveredDay.day.date}</span>
-                      <span className="text-[8px] font-black px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 uppercase tracking-widest font-mono">
-                        Day {hoveredDay.index + 1}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px] font-semibold text-slate-550 leading-relaxed">
-                      <div className="flex justify-between">
-                        <span>😊 Mood:</span>
-                        <strong className="text-slate-800">{Math.round(hoveredDay.day.mood*100)}%</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>⚡ Ambis:</span>
-                        <strong className="text-slate-800">{Math.round(hoveredDay.day.productivity*100)}%</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>🌙 Sleep:</span>
-                        <strong className="text-slate-800">{hoveredDay.day.sleep}j</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>💧 Hydr:</span>
-                        <strong className="text-slate-800">{hoveredDay.day.hydration}gls</strong>
-                      </div>
-                    </div>
-
-                    {hoveredDay.day.journalSnippet && (
-                      <p className="text-[9px] leading-relaxed text-slate-500 italic border-t border-slate-100 pt-2 shrink-0 line-clamp-2">
-                        "{hoveredDay.day.journalSnippet}"
-                      </p>
-                    )}
-
-                    <div className="text-[7.5px] font-bold text-center text-slate-400 tracking-wider uppercase font-mono mt-0.5">
-                      Click fragment to reflect
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Premium Spectral Legend Row */}
-            <div className="flex flex-col gap-3.5 bg-white/40 p-4 border border-white/60 rounded-3xl">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Generative HSL Spectral blend Anchors:</span>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-600">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-                  <span>Ambis Mode</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-600">
-                  <span className="w-2.5 h-2.5 rounded-full bg-brand-500 shadow-[0_0_8px_rgba(89,158,255,0.4)]" />
-                  <span>Calm & Focus</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-600">
-                  <span className="w-2.5 h-2.5 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.4)]" />
-                  <span>Deep Work</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-600">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(249,115,22,0.4)]" />
-                  <span>Social Battery</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-600 col-span-2 sm:col-span-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
-                  <span>Burnout / Stress</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* ================= RIGHT COLUMN: COMMAND & ANALYTICS COCKPIT (xl:col-span-4) ================= */}
-        <div className="xl:col-span-4 flex flex-col gap-6">
-          
-          {/* 1. STUDIO CONTROLS DECK */}
-          <div className="glass-card p-6 flex flex-col gap-6 border border-white/85">
-            
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h4 className="text-xs md:text-sm font-black text-slate-800 uppercase tracking-widest font-sans flex items-center gap-2">
-                <Palette className="w-4 h-4 text-indigo-500" />
-                Studio Controls
-              </h4>
-              <span className="text-[8px] font-black font-mono px-2 py-0.5 rounded bg-brand-500/10 text-brand-650 border border-brand-500/20 uppercase tracking-widest">
-                ACTIVE
-              </span>
-            </div>
-
-            {/* Layout selector */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Select Canvas Layout</span>
-              <div className="flex gap-1.5">
-                {[
-                  { id: 'grid', label: 'Grid', icon: LayoutGrid },
-                  { id: 'radial', label: 'Radial', icon: Compass },
-                  { id: 'ribbon', label: 'Ribbon', icon: Wind }
-                ].map(l => {
-                  const Icon = l.icon;
-                  return (
-                    <button
-                      key={l.id}
-                      onClick={() => setLayout(l.id)}
-                      className={`flex-grow py-2.5 px-3 rounded-2xl border text-xs font-bold transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 ${layout === l.id ? 'bg-slate-900 border-slate-950 text-white shadow-lg shadow-slate-950/20' : 'bg-white/60 border-slate-200/50 text-slate-500 hover:text-slate-800 hover:bg-white'}`}
-                    >
-                      <Icon className="w-3.5 h-3.5" />
-                      {l.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Operating style visual modes */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Visual Design Style</span>
-              <div className="flex gap-2">
-                {[
-                  { id: 'liquid', label: 'Liquid Fluid' },
-                  { id: 'neubrutalist', label: 'Neubrutalist' }
-                ].map(m => (
-                  <button
-                    key={m.id}
-                    onClick={() => setUiMode(m.id)}
-                    className={`flex-grow py-2.5 px-3 rounded-2xl border text-[10px] font-black uppercase tracking-wider font-mono transition-all active:scale-95 cursor-pointer ${visualMode === m.id ? 'bg-slate-900 border-slate-950 text-white shadow-lg' : 'bg-white/60 border-slate-200/50 text-slate-500 hover:text-slate-800 hover:bg-white'}`}
-                  >
-                    {m.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Seasonal Filters sync dials */}
-            <div className="flex flex-col gap-2">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Seasonal Light Sync</span>
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { id: 'spring', label: 'Spring', icon: Leaf, color: 'text-emerald-500 bg-emerald-500/10' },
-                  { id: 'summer', label: 'Summer', icon: Sun, color: 'text-amber-500 bg-amber-500/10' },
-                  { id: 'autumn', label: 'Autumn', icon: Wind, color: 'text-orange-500 bg-orange-500/10' },
-                  { id: 'winter', label: 'Winter', icon: CloudSnow, color: 'text-sky-500 bg-sky-500/10' }
-                ].map(s => {
-                  const Icon = s.icon;
-                  const isActive = seasonFilter === s.id;
-                  return (
-                    <button
-                      key={s.id}
-                      onClick={() => setSeasonFilter(s.id)}
-                      title={`Atmospheric theme: ${s.label}`}
-                      className={`py-3 flex flex-col justify-center items-center rounded-2xl border transition-all cursor-pointer active:scale-90 gap-1 ${isActive ? `${s.color} border-slate-800/25 shadow-sm` : 'bg-white border-slate-200 text-slate-400 hover:text-slate-700'}`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span className="text-[8px] font-black uppercase tracking-widest font-mono">{s.id.slice(0,3)}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Zoom Slider and Pattern Assist */}
-            <div className="grid grid-cols-2 gap-4 pt-3 border-t border-slate-100 items-center">
-              
-              {/* Zoom Slider */}
-              <div className="flex flex-col gap-1.5">
-                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest font-mono">Zoom Scale</span>
-                <input 
-                  type="range" 
-                  min="0.7" 
-                  max="1.8" 
-                  step="0.1"
-                  value={zoomScale}
-                  onChange={(e) => setZoomScale(parseFloat(e.target.value))}
-                  className="w-full accent-slate-900 cursor-ew-resize h-1 bg-slate-200 rounded-lg appearance-none"
-                  title="Scale Grid Viewport"
-                />
-              </div>
-
-              {/* Colorblind toggle */}
-              <button 
-                onClick={() => setColorblindMode(!colorblindMode)}
-                className={`py-2 px-3 rounded-2xl border text-[9px] font-black uppercase tracking-wider font-mono transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 ${colorblindMode ? 'bg-indigo-100 border-indigo-200 text-indigo-700' : 'bg-white border-slate-200 text-slate-400 hover:text-slate-650 hover:bg-slate-100'}`}
-              >
-                {colorblindMode ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-                {colorblindMode ? 'Pattern ON' : 'Pattern OFF'}
-              </button>
-
-            </div>
-
+          {/* Title */}
+          <div className="flex items-center gap-2 mr-auto">
+            <Palette className="w-4 h-4 text-indigo-500 shrink-0" />
+            <span className="font-black text-slate-800 text-sm tracking-tight">Life Tapestry</span>
+            <span className="text-[8px] font-black text-slate-400 font-mono uppercase tracking-widest hidden md:inline">
+              · {new Date().getFullYear()} · {yearData.length} days
+            </span>
           </div>
 
-          {/* 2. PREMIUM REFLECTION ANALYTICS DECK */}
-          <div className="glass-card p-6 flex flex-col gap-4 border border-white/85">
-            
-            <h4 className="text-xs md:text-sm font-black text-slate-800 uppercase tracking-widest font-sans flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Award className="w-4 h-4 text-emerald-500 animate-bounce" />
-              Yearly Reflection analytics
-            </h4>
-
-            <div className="grid grid-cols-2 gap-3.5">
-              
-              {/* Stat 1: Focus Hours */}
-              <div className="p-3 bg-white/45 border border-white/60 rounded-2xl flex flex-col gap-1 shadow-sm">
-                <div className="flex justify-between items-center text-slate-400 text-[8px] font-black uppercase tracking-widest font-mono">
-                  <span>Deep Work</span>
-                  <Flame className="w-3.5 h-3.5 text-emerald-500 fill-emerald-500/10" />
-                </div>
-                <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  <KineticCounter value={stats.totalFocusHours} /> <span className="text-[9px] font-semibold text-slate-400">Hrs</span>
-                </div>
-                <span className="text-[8px] font-bold text-slate-400 mt-1 block">Tapestry Deep Focus</span>
-              </div>
-
-              {/* Stat 2: Habit consistency */}
-              <div className="p-3 bg-white/45 border border-white/60 rounded-2xl flex flex-col gap-1 shadow-sm">
-                <div className="flex justify-between items-center text-slate-400 text-[8px] font-black uppercase tracking-widest font-mono">
-                  <span>Habit consistency</span>
-                  <Award className="w-3.5 h-3.5 text-indigo-500" />
-                </div>
-                <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  <KineticCounter value={stats.habitConsistency} />%
-                </div>
-                <span className="text-[8px] font-bold text-slate-400 mt-1 block">Routine Integrity</span>
-              </div>
-
-              {/* Stat 3: Avg Sleep */}
-              <div className="p-3 bg-white/45 border border-white/60 rounded-2xl flex flex-col gap-1 shadow-sm">
-                <div className="flex justify-between items-center text-slate-400 text-[8px] font-black uppercase tracking-widest font-mono">
-                  <span>Average sleep</span>
-                  <Moon className="w-3.5 h-3.5 text-indigo-550" />
-                </div>
-                <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  <KineticCounter value={stats.averageSleep} /> <span className="text-[9px] font-semibold text-slate-400">Hrs</span>
-                </div>
-                <span className="text-[8px] font-bold text-slate-400 mt-1 block">Avg Sleep Rest</span>
-              </div>
-
-              {/* Stat 4: Mood Index */}
-              <div className="p-3 bg-white/45 border border-white/60 rounded-2xl flex flex-col gap-1 shadow-sm">
-                <div className="flex justify-between items-center text-slate-400 text-[8px] font-black uppercase tracking-widest font-mono">
-                  <span>Mood stability</span>
-                  <Smile className="w-3.5 h-3.5 text-emerald-500" />
-                </div>
-                <div className="text-sm font-black text-slate-800 leading-none mt-1">
-                  <KineticCounter value={stats.averageMood} />% <span className="text-[9px] font-semibold text-slate-400">Good</span>
-                </div>
-                <span className="text-[8px] font-bold text-slate-400 mt-1 block">Sanity Index</span>
-              </div>
-
-            </div>
-
-            {/* Quick summary advisory */}
-            <div className="p-3 bg-indigo-500/5 border border-indigo-500/10 rounded-2xl text-[9px] font-semibold text-slate-500 leading-normal flex items-start gap-2">
-              <span className="text-base select-none">💡</span>
-              <p>
-                Rangkuman tapestri menunjukkan tingkat konsistensi ambismu mencapai <strong>{stats.habitConsistency}%</strong> dengan durasi belajar total <strong>{stats.totalFocusHours} jam</strong>. Pastikan seimbangkan dengan tidur (avg {stats.averageSleep} jam) untuk menjaga stabilitas mental index!
-              </p>
-            </div>
-
+          {/* Layout pills */}
+          <div className="flex gap-1">
+            {[
+              { id: 'grid',   label: 'Grid',   icon: LayoutGrid },
+              { id: 'radial', label: 'Radial', icon: Compass },
+              { id: 'ribbon', label: 'Ribbon', icon: Wind },
+            ].map(l => {
+              const Icon = l.icon;
+              return (
+                <button
+                  key={l.id}
+                  onClick={() => setLayout(l.id)}
+                  title={`Layout: ${l.label}`}
+                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[9px] font-black font-mono uppercase tracking-wide transition-all active:scale-95 cursor-pointer border ${
+                    layout === l.id
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+                      : 'bg-white/60 text-slate-500 border-slate-200/70 hover:text-slate-800 hover:bg-white'
+                  }`}
+                >
+                  <Icon className="w-3 h-3" />
+                  <span className="hidden sm:inline">{l.label}</span>
+                </button>
+              );
+            })}
           </div>
 
-          {/* 3. PREMIUM POSTER EXPORT TRIGGER */}
-          <button 
-            onClick={handleExportPoster}
-            className="w-full p-4 bg-slate-900 hover:bg-slate-800 text-white rounded-3xl text-xs font-black uppercase tracking-wider font-mono transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2 shadow-md relative overflow-hidden group"
+          {/* Season pills */}
+          <div className="flex gap-1">
+            {[
+              { id: 'spring', icon: Leaf,      color: 'text-emerald-600 bg-emerald-50  border-emerald-200' },
+              { id: 'summer', icon: Sun,       color: 'text-amber-600   bg-amber-50    border-amber-200'   },
+              { id: 'autumn', icon: Wind,      color: 'text-orange-600  bg-orange-50   border-orange-200'  },
+              { id: 'winter', icon: CloudSnow, color: 'text-sky-600     bg-sky-50      border-sky-200'     },
+            ].map(s => {
+              const Icon = s.icon;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setSeasonFilter(s.id)}
+                  title={`Season: ${s.id}`}
+                  className={`p-1.5 rounded-xl border transition-all cursor-pointer active:scale-90 ${
+                    seasonFilter === s.id ? s.color : 'bg-white/60 border-slate-200/70 text-slate-400 hover:text-slate-600'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Zoom slider */}
+          <div className="flex items-center gap-1.5 hidden md:flex">
+            <Sliders className="w-3 h-3 text-slate-400 shrink-0" />
+            <input
+              type="range" min="0.7" max="1.8" step="0.1"
+              value={zoomScale}
+              onChange={e => setZoomScale(parseFloat(e.target.value))}
+              className="w-20 accent-slate-800 cursor-ew-resize h-1 bg-slate-200 rounded-lg appearance-none"
+              title="Zoom"
+            />
+          </div>
+
+          {/* Pattern toggle */}
+          <button
+            onClick={() => setColorblindMode(!colorblindMode)}
+            title={colorblindMode ? 'Pattern ON' : 'Pattern OFF'}
+            className={`p-1.5 rounded-xl border transition-all cursor-pointer active:scale-95 ${
+              colorblindMode
+                ? 'bg-indigo-100 border-indigo-200 text-indigo-700'
+                : 'bg-white/60 border-slate-200/70 text-slate-400 hover:text-slate-600'
+            }`}
           >
-            <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] group-hover:left-full left-[-50%] transition-all duration-700 ease-out" />
-            <Download className="w-4 h-4 text-brand-400 animate-bounce" />
-            Export High-Res Gallery Poster
+            {colorblindMode ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
           </button>
 
+          {/* Export button */}
+          <button
+            onClick={handleExportPoster}
+            title="Export Gallery Poster"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-[9px] font-black font-mono uppercase tracking-wide border border-slate-900 shadow-md hover:bg-slate-800 active:scale-95 cursor-pointer transition-all group overflow-hidden relative"
+          >
+            <div className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] group-hover:left-full left-[-50%] transition-all duration-500" />
+            <Download className="w-3.5 h-3.5 text-brand-400" />
+            <span className="hidden sm:inline">Export</span>
+          </button>
+
+          {/* Keyboard hint */}
+          <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-1 text-[8px] font-black text-slate-400 bg-white/60 border border-slate-200 rounded-lg font-mono">
+            <Keyboard className="w-3 h-3" /> Nav
+          </kbd>
+        </div>
+
+        {/* ── HERO CANVAS AREA ── */}
+        <div
+          className={`relative w-full bg-white/20 flex items-center justify-center select-none ${getAmbientAuraClass()}`}
+          style={{ minHeight: layout === 'ribbon' ? 280 : layout === 'radial' ? 480 : 420 }}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+          aria-label="Generative Life Heatmap Canvas. Gunakan tombol panah keyboard untuk menavigasi."
+        >
+          <canvas
+            ref={canvasRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleCanvasClick}
+            className="w-full h-full cursor-crosshair transition-all duration-300"
+            style={{ width: canvasDimensions.width, height: canvasDimensions.height }}
+          />
+
+          {/* Hover tooltip */}
+          {hoveredDay && (
+            <div
+              className="absolute z-[150] pointer-events-none bg-white/96 border rounded-2xl p-3.5 shadow-2xl text-xs text-slate-800 max-w-[220px] -translate-x-1/2 -translate-y-full flex flex-col gap-2"
+              style={{
+                left: tooltipPos.x,
+                top: tooltipPos.y,
+                borderColor: toRgbaStr(calculateCompositeColor(hoveredDay.day), 0.45),
+                backdropFilter: 'blur(16px)',
+              }}
+            >
+              <div className="flex justify-between items-center border-b border-slate-100 pb-1.5">
+                <span className="font-extrabold text-slate-800 font-mono text-[11px]">{hoveredDay.day.date}</span>
+                <span className="text-[7px] font-black px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 uppercase tracking-widest font-mono">Day {hoveredDay.index + 1}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px] font-semibold text-slate-500">
+                <div className="flex justify-between"><span>😊 Mood:</span><strong className="text-slate-800">{Math.round(hoveredDay.day.mood * 100)}%</strong></div>
+                <div className="flex justify-between"><span>⚡ Ambis:</span><strong className="text-slate-800">{Math.round(hoveredDay.day.productivity * 100)}%</strong></div>
+                <div className="flex justify-between"><span>🌙 Sleep:</span><strong className="text-slate-800">{hoveredDay.day.sleep}j</strong></div>
+                <div className="flex justify-between"><span>💧 Hydr:</span><strong className="text-slate-800">{hoveredDay.day.hydration}gls</strong></div>
+              </div>
+              {hoveredDay.day.journalSnippet && (
+                <p className="text-[9px] leading-relaxed text-slate-500 italic border-t border-slate-100 pt-1.5 line-clamp-2">
+                  "{hoveredDay.day.journalSnippet}"
+                </p>
+              )}
+              <div className="text-[7px] font-bold text-center text-slate-400 tracking-wider uppercase font-mono">Click to reflect</div>
+            </div>
+          )}
+        </div>
+
+        {/* ── BOTTOM ROW: Legend + Stats ── */}
+        <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-slate-100/70">
+          
+          {/* Spectral legend — compact dots row */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-[7.5px] font-black text-slate-400 uppercase tracking-widest font-mono shrink-0">Spectrum:</span>
+            {[
+              { label: 'Ambis',    color: 'bg-emerald-500', glow: 'shadow-[0_0_6px_rgba(16,185,129,0.5)]' },
+              { label: 'Focus',    color: 'bg-brand-500',   glow: 'shadow-[0_0_6px_rgba(89,158,255,0.5)]'  },
+              { label: 'Deep',     color: 'bg-violet-500',  glow: 'shadow-[0_0_6px_rgba(139,92,246,0.5)]'  },
+              { label: 'Social',   color: 'bg-amber-500',   glow: 'shadow-[0_0_6px_rgba(249,115,22,0.5)]'  },
+              { label: 'Burnout',  color: 'bg-rose-500',    glow: 'shadow-[0_0_6px_rgba(239,68,68,0.5)]'   },
+            ].map(l => (
+              <div key={l.label} className="flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${l.color} ${l.glow} shrink-0`} />
+                <span className="text-[9px] font-bold text-slate-500">{l.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* 4 Stat chips */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {[
+              { emoji: '🔥', val: `${stats.totalFocusHours}h`, label: 'Deep Work' },
+              { emoji: '🏅', val: `${stats.habitConsistency}%`, label: 'Habits' },
+              { emoji: '🌙', val: `${stats.averageSleep}h`, label: 'Sleep' },
+              { emoji: '😊', val: `${stats.averageMood}%`, label: 'Mood' },
+            ].map(s => (
+              <div key={s.label}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/55 border border-white/70 rounded-xl shadow-sm">
+                <span className="text-sm leading-none">{s.emoji}</span>
+                <div>
+                  <div className="text-[11px] font-black text-slate-800 leading-none">{s.val}</div>
+                  <div className="text-[7.5px] font-black text-slate-400 font-mono uppercase tracking-wide mt-0.5">{s.label}</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>
 
-      {/* EXPANDED DRILLDOWN DIALOG NOTE */}
+      {/* ── AI INSIGHT STRIP ── */}
+      <div className="glass-card-no-hover px-5 py-3 border border-white/85 flex items-start gap-3">
+        <span className="text-lg shrink-0 mt-0.5">💡</span>
+        <p className="text-[10px] leading-relaxed text-slate-600 font-semibold">
+          Tapestri menunjukkan konsistensi <strong className="text-slate-800">{stats.habitConsistency}%</strong> dengan{' '}
+          <strong className="text-slate-800">{stats.totalFocusHours} jam</strong> deep work total.{' '}
+          Tidur rata-rata <strong className="text-slate-800">{stats.averageSleep}j</strong> — pertahankan diatas 7j untuk menjaga mood index tetap di atas 70%.
+        </p>
+        <div className="ml-auto shrink-0 flex flex-col items-end gap-1">
+          <span className="text-[7px] font-black text-brand-600 font-mono uppercase tracking-widest px-2 py-0.5 bg-brand-500/10 rounded-full border border-brand-500/20">AI Insight</span>
+        </div>
+      </div>
+
+      {/* Journal Modal */}
       <JournalDetailModal
         dayData={selectedDay}
         isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedDay(null);
-        }}
+        onClose={() => { setIsModalOpen(false); setSelectedDay(null); }}
         onSaveJournal={handleSaveJournalSnippet}
       />
-
     </div>
   );
 }
+
