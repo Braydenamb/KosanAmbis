@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { saveTodaySnapshot } from '../hooks/useInsightEngine';
 
 const CharacterContext = createContext();
 
@@ -204,6 +205,51 @@ export function CharacterProvider({ children }) {
     });
   };
 
+  // --- NLP Quick-Add action dispatcher ---
+  const addExpenseFromNLP = (parsed) => {
+    if (!parsed || !parsed.amount) return;
+    if (parsed.intent === 'income') {
+      setWalletAllowance(prev => prev + parsed.amount);
+    } else {
+      const entry = {
+        id: Date.now(),
+        title: parsed.merchant || parsed.description || parsed.rawText,
+        amount: parsed.amount,
+        date: parsed.date || new Date().toISOString().split('T')[0],
+        category: parsed.category,
+        source: 'nlp',
+        rawText: parsed.rawText,
+      };
+      setWalletExpenses(prev => [...prev, entry]);
+    }
+    addXP(3);
+  };
+
+  // --- Auto-save daily snapshot for Insight Engine (passive tracking) ---
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const todayExpenses = walletExpenses
+      .filter(e => e.date === today)
+      .reduce((sum, e) => sum + e.amount, 0);
+    const coffeeToday = walletExpenses
+      .filter(e => e.date === today && e.category === 'Kopi')
+      .length;
+
+    saveTodaySnapshot({
+      sleepHours: Number(sleepHours) || 0,
+      focusHours: Number(focusHours) || 0,
+      hp,
+      sanity,
+      walletBalance,
+      dailySpending: todayExpenses,
+      coffeeCount: coffeeToday,
+      productivityScore: Math.min(
+        Math.round((Number(focusHours) / 8) * 100 + (sanity > 60 ? 20 : 0)),
+        100
+      ),
+    });
+  }, [sleepHours, focusHours, walletBalance, walletExpenses]);
+
   return (
     <CharacterContext.Provider value={{
       // Core states
@@ -238,7 +284,8 @@ export function CharacterProvider({ children }) {
       characterTitle,
 
       // Action dispatchers
-      addXP
+      addXP,
+      addExpenseFromNLP,
     }}>
       {children}
     </CharacterContext.Provider>

@@ -11,13 +11,80 @@ import RainCanvas from './components/ui/RainCanvas';
 import Toast from './components/Toast';
 import EcosystemCommandCenter from './components/dashboard/EcosystemCommandCenter';
 import LifeHeatmapCanvas from './components/ui/LifeHeatmapCanvas';
-import { Menu, X, Grid, CloudRain, Shield, BookOpen, Brain, Sparkles } from 'lucide-react';
+import { Menu, X, Grid, CloudRain, Shield, Brain, Sparkles, Zap, Bot, Heart, GitCommit } from 'lucide-react';
 import './App.css';
 import { useAtmosphere } from './context/AtmosphereContext';
 import AmbientSoundscapePlayer from './components/ui/AmbientSoundscapePlayer';
 import { useNotifications } from './context/NotificationContext';
 import NotificationHub from './components/ui/NotificationHub';
+import QuickAddBar from './components/automation/QuickAddBar';
+import InsightPanel from './components/insights/InsightPanel';
+import SyncStatusBadge from './components/ui/SyncStatusBadge';
+import BotSimulator from './components/automation/BotSimulator';
+import ProductivitySyncPanel from './components/productivity/ProductivitySyncPanel';
+import HealthSyncDashboard from './components/health/HealthSyncDashboard';
 
+
+// ─── AUTOMATION HUB TAB — Phase 2 + 3 + 4 ────────────────────────────────────
+function AutomationHubTab() {
+  const [activePanel, setActivePanel] = useState('bot');
+
+  const panels = [
+    { id: 'bot',          icon: Bot,       label: '🤖 Bot Telegram',    desc: 'Catat pengeluaran via chat' },
+    { id: 'productivity', icon: GitCommit, label: '⚡ Productivity Sync', desc: 'GitHub · VSCode · Obsidian' },
+    { id: 'health',       icon: Heart,     label: '💚 Health Sync',       desc: 'Steps · Sleep · HR · Hydration' },
+  ];
+
+  return (
+    <div className="flex flex-col gap-4 w-full">
+      {/* Hub Header */}
+      <div className="glass-card p-5 bg-gradient-to-br from-brand-50/60 to-indigo-50/40 border border-brand-100/50">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500 to-indigo-500 flex items-center justify-center shadow-glow">
+            <Zap className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="font-extrabold text-slate-800 text-sm">Zero-Friction Automation Hub</h2>
+            <p className="text-[9px] text-slate-500 font-mono mt-0.5">Self-updating life OS · Dummy data mode · Phase 2–4</p>
+          </div>
+          <div className="ml-auto">
+            <SyncStatusBadge compact />
+          </div>
+        </div>
+
+        {/* Panel tabs */}
+        <div className="grid grid-cols-3 gap-2">
+          {panels.map(p => (
+            <button
+              key={p.id}
+              onClick={() => setActivePanel(p.id)}
+              className={`p-3 rounded-2xl border text-left transition-all active:scale-98 cursor-pointer flex flex-col gap-1 ${
+                activePanel === p.id
+                  ? 'bg-slate-900 border-slate-800 text-white shadow-lg'
+                  : 'bg-white/60 border-slate-200/60 text-slate-600 hover:bg-white hover:border-slate-300'
+              }`}
+            >
+              <p.icon className={`w-4 h-4 mb-0.5 ${activePanel === p.id ? 'text-brand-400' : 'text-slate-400'}`} />
+              <span className="text-[10px] font-black leading-tight">{p.label}</span>
+              <span className={`text-[8px] font-mono ${activePanel === p.id ? 'text-slate-400' : 'text-slate-400'}`}>
+                {p.desc}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Panel Content */}
+      {activePanel === 'bot' && (
+        <div className="glass-card overflow-hidden p-0">
+          <BotSimulator />
+        </div>
+      )}
+      {activePanel === 'productivity' && <ProductivitySyncPanel />}
+      {activePanel === 'health' && <HealthSyncDashboard />}
+    </div>
+  );
+}
 
 function MainAppHub() {
   const { toasts, removeToast, addToast } = useCharacter();
@@ -110,8 +177,13 @@ function MainAppHub() {
 
         {/* Right section: Global shortcuts & User Profile */}
         <div className="flex items-center gap-3">
+          {/* Sync Status Badge */}
+          <div className="hidden md:flex">
+            <SyncStatusBadge />
+          </div>
+
           {/* Active OS Theme indicator */}
-          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/40 border border-white/60 rounded-full text-[9px] font-black uppercase font-mono text-slate-500 tracking-wider">
+          <span className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/40 border border-white/60 rounded-full text-[9px] font-black uppercase font-mono text-slate-500 tracking-wider">
             🎨 {uiMode === 'neubrutalist' ? 'Neubrutalist OS' : 'Liquid Glass OS'}
           </span>
 
@@ -215,13 +287,14 @@ function MainAppHub() {
           </div>
 
           {/* ================= CATEGORY COCKPIT NAVIGATION BAR ================= */}
-          <div className="glass-card-no-hover p-3 flex gap-3 border border-white/85 overflow-x-auto whitespace-nowrap scrollbar-thin select-none">
+          <div className="glass-card-no-hover p-3 flex gap-2 border border-white/85 overflow-x-auto whitespace-nowrap scrollbar-thin select-none">
             {[
               { id: 'overview', label: '🌐 Overview' },
               { id: 'tapestry', label: '🖼️ Life Tapestry' },
               { id: 'productivity', label: '⚡ Productivity' },
               { id: 'financials', label: '💸 Financials' },
               { id: 'survival', label: '🍲 Survival & Socials' },
+              { id: 'automation', label: '🤖 Automation Hub' },
               { id: 'notifications', label: `🔔 Inbox ${unreadCount > 0 ? `(${unreadCount})` : ''}` }
             ].map(cat => (
               <button
@@ -229,7 +302,7 @@ function MainAppHub() {
                 onClick={() => {
                   setActiveCategory(cat.id);
                 }}
-                className={`px-6 py-3 rounded-2xl text-xs md:text-sm font-extrabold uppercase tracking-wider font-sans cursor-pointer transition-all active:scale-95 duration-300 ${
+                className={`px-5 py-2.5 rounded-2xl text-xs md:text-sm font-extrabold uppercase tracking-wider font-sans cursor-pointer transition-all active:scale-95 duration-300 ${
                   activeCategory === cat.id 
                     ? 'bg-slate-900 text-white shadow-lg shadow-slate-950/20' 
                     : 'bg-white/50 border border-slate-200/40 text-slate-500 hover:text-slate-800 hover:bg-white'
@@ -243,9 +316,17 @@ function MainAppHub() {
           {/* ================= CONDITIONAL CATEGORIZED TABS CONTENT ================= */}
           {activeCategory === 'overview' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+              {/* Zero-Friction Quick Add Bar */}
+              <div className="col-span-1 lg:col-span-12">
+                <QuickAddBar />
+              </div>
               {/* RPG Profile & Interactive bars */}
               <div className="col-span-1 lg:col-span-12">
                 <RPGHeader />
+              </div>
+              {/* AI Life Insights Panel */}
+              <div className="col-span-1 lg:col-span-12">
+                <InsightPanel />
               </div>
               {/* Device & Market Ecosystem Simulation Command Center */}
               <div className="col-span-1 lg:col-span-12">
@@ -272,6 +353,10 @@ function MainAppHub() {
 
           {activeCategory === 'financials' && (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+              {/* NLP Quick Add — primary entry point in finance tab */}
+              <div className="col-span-1 lg:col-span-12">
+                <QuickAddBar />
+              </div>
               <div className="col-span-1 lg:col-span-12">
                 <FinanceModule />
               </div>
@@ -297,6 +382,11 @@ function MainAppHub() {
                 <NotificationHub />
               </div>
             </div>
+          )}
+
+          {/* =================== AUTOMATION HUB TAB =================== */}
+          {activeCategory === 'automation' && (
+            <AutomationHubTab />
           )}
 
         </div>
