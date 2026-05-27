@@ -12,8 +12,12 @@ export default function AmbientSoundscapePlayer() {
     audioPreset, isPlaying,
     volume, setVolume,
     playSoundPreset, toggleAudio,
-    uiMode, toggleUiMode
+    uiMode, toggleUiMode,
+    isAdaptive, setIsAdaptive,
+    isMidnightProtected,
+    focusMode, setFocusMode
   } = useAtmosphere();
+
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,15 +83,43 @@ export default function AmbientSoundscapePlayer() {
               className={`px-3 py-1 rounded-xl text-[10px] font-bold transition-all cursor-pointer border
                 ${uiMode === 'neubrutalist'
                   ? 'bg-amber-400 text-black border-black shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none'
-                  : 'bg-white text-slate-800 border-slate-200 hover:scale-105 active:scale-95'}`}
+                  : 'bg-slate-50 text-slate-700 border-slate-300 hover:scale-105 active:scale-95'}`}
             >
               {uiMode === 'neubrutalist' ? '🦖 NEUBRUTALISM' : '🌊 LIQUID FLUID'}
             </button>
           </div>
 
+          {/* Study Focus Mode Switcher */}
+          <div className="bg-slate-50 border rounded-2xl p-2.5 flex items-center justify-between" style={{ borderColor: 'var(--c-border-active, var(--c-border))' }}>
+            <div>
+              <span className="text-[10px] font-bold text-slate-700 block">Study Focus Mode</span>
+              <span className="text-[8px] text-slate-400 block font-mono">VIGNETTE & CONCENTRATION</span>
+            </div>
+            <button
+              onClick={() => setFocusMode(f => !f)}
+              className={`px-3 py-1 rounded-xl text-[10px] font-bold transition-all cursor-pointer border
+                ${focusMode
+                  ? 'bg-indigo-600 text-white border-indigo-700 shadow-[0_0_10px_rgba(99,102,241,0.5)] active:translate-x-0.5 active:translate-y-0.5'
+                  : 'bg-slate-50 text-slate-700 border-slate-300 hover:scale-105 active:scale-95'}`}
+            >
+              {focusMode ? '🧘 DEEP WORK ON' : '💤 FOCUS OFF'}
+            </button>
+          </div>
+
           {/* Theme/Weather Simulation presets (Dummy Selector) */}
           <div>
-            <span className="ds-section-label block mb-2 text-slate-400">Adaptive Atmosphere Presets</span>
+            <div className="flex items-center justify-between mb-2">
+              <span className="ds-section-label text-slate-400 block">Adaptive Atmosphere Presets</span>
+              <button
+                onClick={() => setIsAdaptive(a => !a)}
+                className={`px-2 py-0.5 rounded-lg text-[8px] font-mono font-bold tracking-tight border transition-all cursor-pointer
+                  ${isAdaptive 
+                    ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/25 animate-pulse' 
+                    : 'bg-slate-100 text-slate-400 border-slate-200'}`}
+              >
+                {isAdaptive ? '🤖 ADAPTIVE ACTIVE' : '🔒 LOCK MANUAL'}
+              </button>
+            </div>
             <div className="grid grid-cols-2 gap-1.5">
               {themes.map(t => {
                 const isActive = activeTheme === t.id;
@@ -98,8 +130,8 @@ export default function AmbientSoundscapePlayer() {
                     aria-pressed={isActive}
                     className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl border text-[11px] font-semibold cursor-pointer transition-all
                       ${isActive
-                        ? 'bg-white border-slate-300 shadow-sm font-bold'
-                        : 'bg-white/40 border-slate-100/50 hover:bg-white/60'}`}
+                        ? 'bg-slate-50 border-slate-300 shadow-sm font-bold'
+                        : 'bg-slate-100/30 border-slate-200/50 hover:bg-slate-100/50 text-slate-700'}`}
                   >
                     <t.icon className={`w-3.5 h-3.5 ${t.color}`} />
                     <span style={{ color: isActive ? 'var(--c-accent-active)' : 'inherit' }}>{t.label}</span>
@@ -123,11 +155,11 @@ export default function AmbientSoundscapePlayer() {
                     title={p.desc}
                     className={`flex items-center gap-2.5 p-2 rounded-xl border transition-all text-left cursor-pointer
                       ${isActive
-                        ? 'border-slate-400 bg-white shadow-sm ring-1 ring-slate-300'
-                        : 'border-slate-100 bg-white/40 hover:bg-white/60'}`}
+                        ? 'border-slate-300 bg-slate-50 shadow-sm'
+                        : 'border-slate-200/60 bg-slate-100/30 hover:bg-slate-100/50 text-slate-700'}`}
                   >
                     <div className={`p-1.5 rounded-lg border transition-all
-                      ${isActive ? 'bg-slate-900 text-white' : 'bg-white text-slate-500'}`}>
+                      ${isActive ? 'bg-slate-900 text-slate-50 border-slate-400/20' : 'bg-slate-100 text-slate-500 border-slate-200/40'}`}>
                       <p.icon className="w-3.5 h-3.5" />
                     </div>
                     <div className="min-w-0">
@@ -141,7 +173,15 @@ export default function AmbientSoundscapePlayer() {
           </div>
 
           {/* Audio Visualizer & Level Slider */}
-          <div className="bg-white/50 border rounded-2xl p-3 flex flex-col gap-2.5" style={{ borderColor: 'var(--c-border-active, var(--c-border))' }}>
+          <div className="bg-slate-100/30 border rounded-2xl p-3 flex flex-col gap-2.5" style={{ borderColor: 'var(--c-border-active, var(--c-border))' }}>
+            {/* Midnight volume protective warning badge */}
+            {isMidnightProtected && (
+              <div className="bg-amber-500/10 border border-amber-500/35 rounded-xl px-2 py-1 flex items-center justify-between animate-pulse">
+                <span className="text-[8px] font-bold text-amber-600 font-mono">🌙 MIDNIGHT EAR DEFENSE ON</span>
+                <span className="text-[7px] text-amber-500 font-mono">Volume cap 40%</span>
+              </div>
+            )}
+            
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <button
@@ -170,6 +210,7 @@ export default function AmbientSoundscapePlayer() {
               )}
             </div>
 
+
             {/* Volume slider */}
             <div className="flex items-center gap-2">
               <button
@@ -194,6 +235,7 @@ export default function AmbientSoundscapePlayer() {
               </span>
             </div>
           </div>
+
         </div>
       )}
 

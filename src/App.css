@@ -54,10 +54,33 @@
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle, transparent 40%, rgba(148, 163, 184, 0.20) 100%);
+  background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.40) 100%);
   z-index: 5;
   transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+@keyframes breathing-focus-glow {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.60;
+    transform: scale(1.05);
+  }
+}
+
+.focus-mode-active::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, var(--c-accent-active, #6366f1) 0%, transparent 60%);
+  animation: breathing-focus-glow 7s ease-in-out infinite;
+  transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 
 /* ── Blur and mute secondary columns in Focus mode for absolute concentration ── */
 .focus-mode-active .sidebar-left,

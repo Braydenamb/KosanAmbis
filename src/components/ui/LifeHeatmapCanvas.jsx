@@ -368,11 +368,31 @@ export default function LifeHeatmapCanvas() {
       const startX = (width - totalGridWidth) / 2;
       const gridTopY = (height - (7 * cellSize + 6 * cellGap)) / 2;
 
-      for (let m = 0; m < 12; m++) {
-        const colIdx = Math.round((m / 12) * 51) + 1;
-        const xPos = startX + colIdx * (cellSize + cellGap) + cellSize / 2;
-        ctx.fillText(monthNames[m], xPos, gridTopY - 6);
-      }
+      // Mathematically determine exact columns where months start to prevent drift and misalignment
+      const monthPositions = [];
+      const seenMonths = new Set();
+      
+      yearData.forEach((day, i) => {
+        const parts = day.date.split('-');
+        const monthIdx = parseInt(parts[1], 10) - 1;
+        const dayNum = parseInt(parts[2], 10);
+        
+        if (i === 0 || dayNum === 1) {
+          if (!seenMonths.has(monthIdx)) {
+            seenMonths.add(monthIdx);
+            const col = Math.floor(i / 7);
+            monthPositions.push({
+              name: monthNames[monthIdx],
+              col: col
+            });
+          }
+        }
+      });
+
+      monthPositions.forEach(pos => {
+        const xPos = startX + pos.col * (cellSize + cellGap) + cellSize / 2;
+        ctx.fillText(pos.name, xPos, gridTopY - 6);
+      });
       ctx.restore();
     }
 
@@ -652,11 +672,31 @@ export default function LifeHeatmapCanvas() {
       const startX = (exportWidth - gridW) / 2;
       const gridTopY = 850;
 
-      for (let m = 0; m < 12; m++) {
-        const colIdx = Math.round((m / 12) * 51) + 1;
-        const xPos = startX + colIdx * (32 + cellGap) + 16;
-        eCtx.fillText(monthNames[m], xPos, gridTopY - 24);
-      }
+      // Mathematically determine exact columns where months start to prevent drift and misalignment in high-res exports
+      const monthPositions = [];
+      const seenMonths = new Set();
+      
+      yearData.forEach((day, i) => {
+        const parts = day.date.split('-');
+        const monthIdx = parseInt(parts[1], 10) - 1;
+        const dayNum = parseInt(parts[2], 10);
+        
+        if (i === 0 || dayNum === 1) {
+          if (!seenMonths.has(monthIdx)) {
+            seenMonths.add(monthIdx);
+            const col = Math.floor(i / 7);
+            monthPositions.push({
+              name: monthNames[monthIdx],
+              col: col
+            });
+          }
+        }
+      });
+
+      monthPositions.forEach(pos => {
+        const xPos = startX + pos.col * (32 + cellGap) + 16;
+        eCtx.fillText(pos.name, xPos, gridTopY - 24);
+      });
     }
 
     eCtx.save();

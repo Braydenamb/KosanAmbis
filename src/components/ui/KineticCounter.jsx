@@ -47,7 +47,11 @@ export default function KineticCounter({ value, className = '' }) {
   const DigitRoll = ({ digit }) => {
     const isNum = /\d/.test(digit);
     if (!isNum || reducedMotion) {
-      return <span className="inline-block transition-transform duration-100">{digit}</span>;
+      return (
+        <span className="inline-block h-[1.25em] min-w-[0.2em] px-[0.02em] leading-[1.25em] text-center select-none font-mono shrink-0">
+          {digit}
+        </span>
+      );
     }
 
     const num = parseInt(digit, 10);
@@ -55,9 +59,9 @@ export default function KineticCounter({ value, className = '' }) {
     const translateY = -num * 10; // in percentage of height of 10-digit block
 
     return (
-      <span className="inline-block relative overflow-hidden h-[1.25em] w-[0.62em] leading-none align-baseline select-none">
+      <span className="inline-block relative overflow-hidden h-[1.25em] w-[0.62em] leading-none select-none font-mono shrink-0">
         <span 
-          className="flex flex-col absolute left-0 transition-transform duration-600 cubic-bezier(0.16, 1, 0.3, 1)"
+          className="flex flex-col absolute left-0 right-0 transition-transform duration-600 cubic-bezier(0.16, 1, 0.3, 1)"
           style={{ transform: `translateY(${translateY}%)` }}
         >
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (
@@ -76,7 +80,7 @@ export default function KineticCounter({ value, className = '' }) {
   };
 
   return (
-    <span className={`inline-flex items-baseline font-mono tracking-tight transition-all duration-300 ${getAnimationClass()} ${className}`}>
+    <span className={`inline-flex flex-row items-center whitespace-nowrap font-mono tracking-tight transition-all duration-300 ${getAnimationClass()} ${className}`}>
       {chars.map((char, idx) => (
         <DigitRoll key={idx} digit={char} />
       ))}

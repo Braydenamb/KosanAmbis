@@ -192,20 +192,61 @@
 }
 
 html, body {
-  background-color: #f1f5f9;
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(220, 238, 255, 0.6) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, rgba(207, 232, 255, 0.5) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, rgba(224, 231, 255, 0.6) 0, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(248, 250, 252, 1) 0, transparent 70%);
+  background: var(--c-bg-app, #f1f5f9);
   background-attachment: fixed;
-  color: #334155;
+  color: var(--color-slate-700);
   font-family: 'Quicksand', sans-serif;
   font-size: 18.5px; /* Global scale boost: increases all rem/em sizes by 15.6% */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: background 1200ms cubic-bezier(0.4, 0, 0.2, 1), color 1200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* ── SYSTEMIC DARK THEME OVERRIDES ── */
+.theme-dark {
+  /* Invert the entire Tailwind slate spectrum dynamically based on the active atmosphere preset */
+  --color-slate-50: var(--c-bg-card-active);    /* Card background (translucent dark) */
+  --color-slate-100: var(--c-bg-card-active);   /* Card / input background */
+  --color-slate-200: rgba(255, 255, 255, 0.06); /* Soft hover/border highlight */
+  --color-slate-300: var(--c-border-active);    /* Atmosphere dynamic border */
+  --color-slate-400: rgba(255, 255, 255, 0.45); /* Muted labels */
+  --color-slate-500: rgba(255, 255, 255, 0.60); /* Medium labels / icons */
+  --color-slate-600: rgba(255, 255, 255, 0.75); /* Secondary readable text */
+  --color-slate-700: var(--c-text-active);      /* Primary content text */
+  --color-slate-800: var(--c-text-active);      /* High-contrast text */
+  --color-slate-900: #ffffff;                   /* Bright title text */
+  --color-slate-950: #ffffff;                   /* Bright title text */
+
+  /* In dark mode, card background & borders are completely dynamic to match the active atmosphere! */
+  --ui-card-bg: var(--c-bg-card-active);
+  --ui-border-color: var(--c-border-active);
+  --ui-card-shadow: 0 20px 40px -15px rgba(2, 6, 23, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+
+
+.theme-dark body {
+  color: #cbd5e1 !important;
+}
+
+/* Redampen glowing mesh backdrops in dark mode to blend with dark themes */
+.theme-dark .liquid-mesh-aurora {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
+  filter: blur(120px);
+}
+
+.theme-dark .liquid-mesh-aurora-two {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%);
+  filter: blur(140px);
+}
+
+/* ── MIDNIGHT EYE-SAVER REDUCTION ── */
+.midnight-mode-active {
+  filter: brightness(0.88) saturate(0.82) contrast(0.96) !important;
+  transition: filter 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Fredoka', sans-serif;

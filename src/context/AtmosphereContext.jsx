@@ -468,6 +468,8 @@ export function AtmosphereProvider({ children }) {
   const [audioPreset, setAudioPreset] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.4);
+  const [isAdaptive, setIsAdaptive] = useState(true);
+  const [isMidnightProtected, setIsMidnightProtected] = useState(false);
 
   const engineRef = useRef(null);
 
@@ -475,7 +477,46 @@ export function AtmosphereProvider({ children }) {
     engineRef.current = new AmbientSynthEngine();
   }
 
-  // Effect to apply dynamic theme variables to document.documentElement
+  // Time-based automatic cycle and midnight adjustments
+  useEffect(() => {
+    const checkTime = () => {
+      const date = new Date();
+      const hour = date.getHours();
+      
+      // Midnight Protected mode: volume restriction between 23:00 and 06:00
+      const isNight = hour >= 23 || hour < 6;
+      setIsMidnightProtected(isNight);
+
+      // Midnight eye-saver screen filter active between 00:00 and 06:00
+      const isMidnightSaver = hour >= 0 && hour < 6;
+      const root = document.documentElement;
+      if (isMidnightSaver) {
+        root.classList.add('midnight-mode-active');
+      } else {
+        root.classList.remove('midnight-mode-active');
+      }
+
+      // If automatic atmosphere cycle is enabled, update activeTheme based on time of day
+      if (isAdaptive) {
+        if (hour >= 6 && hour < 11) {
+          setActiveTheme('sunny-day');   // Fresh Morning
+        } else if (hour >= 11 && hour < 16) {
+          setActiveTheme('sunny-day');   // Bright Afternoon
+        } else if (hour >= 16 && hour < 19) {
+          setActiveTheme('sunset-mode');  // Cinematic Sunset
+        } else {
+          // Evening & Night: Keep existing rain/storm or fallback to serene clear night
+          setActiveTheme(prev => (prev === 'rainy-night' || prev === 'storm-mode') ? prev : 'clear-night');
+        }
+      }
+    };
+
+    checkTime();
+    const interval = setInterval(checkTime, 30000); // Check every 30 seconds
+    return () => clearInterval(interval);
+  }, [isAdaptive]);
+
+  // Effect to apply dynamic theme variables and toggle dark mode class
   useEffect(() => {
     const preset = atmosphericPresets[activeTheme];
     if (!preset) return;
@@ -488,9 +529,10 @@ export function AtmosphereProvider({ children }) {
     root.style.setProperty('--c-text-active', preset.text);
     root.style.setProperty('--c-border-active', preset.border);
 
-    // Keep all themes in beautiful light pastel mode
+    // Keep all themes in beautiful light pastel mode as requested by user
     root.classList.remove('theme-dark');
   }, [activeTheme]);
+
 
   // Neubrutalism vs Liquid layout token injection
   useEffect(() => {
@@ -514,10 +556,25 @@ export function AtmosphereProvider({ children }) {
     }
   }, [uiMode, activeTheme]);
 
-  // Adjust volume
+  // Focus Mode DOM class injection
   useEffect(() => {
-    engineRef.current.setVolume(volume);
-  }, [volume]);
+    const root = document.documentElement;
+    if (focusMode) {
+      root.classList.add('focus-mode-active');
+      // Automatically trigger Lofi preset when deep work starts (if no audio is playing)
+      if (!isPlaying) {
+        playSoundPreset('lofi');
+      }
+    } else {
+      root.classList.remove('focus-mode-active');
+    }
+  }, [focusMode]);
+
+  // Adjust volume with automatic midnight cap (max 40% volume)
+  useEffect(() => {
+    const actualVol = isMidnightProtected ? Math.min(volume, 0.40) : volume;
+    engineRef.current.setVolume(actualVol);
+  }, [volume, isMidnightProtected]);
 
   // Accessibility keyboard shortcuts
   useEffect(() => {
@@ -534,6 +591,7 @@ export function AtmosphereProvider({ children }) {
 
   const selectTheme = (themeName) => {
     if (atmosphericPresets[themeName]) {
+      setIsAdaptive(false); // Pause automatic cycles when user overrides theme choice
       setActiveTheme(themeName);
     }
   };
@@ -591,6 +649,9 @@ export function AtmosphereProvider({ children }) {
         setVolume,
         playSoundPreset,
         toggleAudio,
+        isAdaptive,
+        setIsAdaptive,
+        isMidnightProtected,
         stopAudio: () => {
           engineRef.current.stopAll();
           setIsPlaying(false);

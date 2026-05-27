@@ -7,7 +7,7 @@ import FinanceModule from './components/finance/FinanceModule';
 import SurvivalModule from './components/survival/SurvivalModule';
 import ProductivityModule from './components/productivity/ProductivityModule';
 import SocialModule from './components/social/SocialModule';
-import RainCanvas from './components/ui/RainCanvas';
+import AtmosphereCanvas from './components/ui/AtmosphereCanvas';
 import Toast from './components/Toast';
 import EcosystemCommandCenter from './components/dashboard/EcosystemCommandCenter';
 import LifeHeatmapCanvas from './components/ui/LifeHeatmapCanvas';
@@ -23,6 +23,7 @@ import SyncStatusBadge from './components/ui/SyncStatusBadge';
 import BotSimulator from './components/automation/BotSimulator';
 import ProductivitySyncPanel from './components/productivity/ProductivitySyncPanel';
 import HealthSyncDashboard from './components/health/HealthSyncDashboard';
+import PredictiveIntelligenceHub from './components/analytics/PredictiveIntelligenceHub';
 
 
 // ─── AUTOMATION HUB TAB — Phase 2 + 3 + 4 ────────────────────────────────────
@@ -88,8 +89,9 @@ function AutomationHubTab() {
 
 function MainAppHub() {
   const { toasts, removeToast, addToast } = useCharacter();
-  const { activeTheme, selectTheme, focusMode, setFocusMode, uiMode, toggleUiMode } = useAtmosphere();
+  const { activeTheme, selectTheme, focusMode, setFocusMode, uiMode, toggleUiMode, particleMode } = useAtmosphere();
   const { unreadCount } = useNotifications();
+  const rainActive = activeTheme === 'rainy-night' || activeTheme === 'storm-mode';
 
   // --- Grid & OS Collapsible Sidebar state ---
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -104,9 +106,6 @@ function MainAppHub() {
   // --- Category Tabs Navigation ---
   const [activeCategory, setActiveCategory] = useState('overview');
 
-  // --- Theme / Weather Toggles ---
-  const rainActive = activeTheme === 'rainy-night' || activeTheme === 'storm-mode';
-
   // --- Mobile Drawer Toggles ---
   const [showLeftDrawer, setShowLeftDrawer] = useState(false);
   const [showRightDrawer, setShowRightDrawer] = useState(false);
@@ -118,8 +117,8 @@ function MainAppHub() {
       <div className="liquid-mesh-aurora"></div>
       <div className="liquid-mesh-aurora-two"></div>
 
-      {/* 2. ANIMATED CANVAS RAIN OVERLAY */}
-      <RainCanvas active={rainActive} />
+      {/* 2. ANIMATED CANVAS ATMOSPHERE EFFECTS OVERLAY */}
+      <AtmosphereCanvas mode={particleMode} />
 
       {/* 3. TOAST SYSTEM CONTAINER (SILENCED BY USER DEMAND) */}
       {/* <Toast toasts={toasts} removeToast={removeToast} /> */}
@@ -295,6 +294,7 @@ function MainAppHub() {
               { id: 'financials', label: '💸 Financials' },
               { id: 'survival', label: '🍲 Survival & Socials' },
               { id: 'automation', label: '🤖 Automation Hub' },
+              { id: 'analytics', label: '🔮 AI Analyst' },
               { id: 'notifications', label: `🔔 Inbox ${unreadCount > 0 ? `(${unreadCount})` : ''}` }
             ].map(cat => (
               <button
@@ -387,6 +387,11 @@ function MainAppHub() {
           {/* =================== AUTOMATION HUB TAB =================== */}
           {activeCategory === 'automation' && (
             <AutomationHubTab />
+          )}
+
+          {/* =================== PREDICTIVE INTEL TAB =================== */}
+          {activeCategory === 'analytics' && (
+            <PredictiveIntelligenceHub />
           )}
 
         </div>
