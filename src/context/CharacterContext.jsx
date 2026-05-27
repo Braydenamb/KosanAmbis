@@ -28,65 +28,82 @@ export function CharacterProvider({ children }) {
   };
 
   // --- Basic Kosan States ---
-  const [focusHours, setFocusHours] = useState(() => loadLocally('ankos_focus_hours', 0));
-  const [waterIntake, setWaterIntake] = useState(() => loadLocally('ankos_water_intake', 2));
-  const [sleepHours, setSleepHours] = useState(() => loadLocally('ankos_sleep_hours', 7));
-  const [socialBattery, setSocialBattery] = useState(() => loadLocally('ankos_social_battery', 70));
+  const [focusHours, setFocusHours] = useState(() => loadLocally('ankos_focus_hours', 4.2));
+  const [waterIntake, setWaterIntake] = useState(() => loadLocally('ankos_water_intake', 6));
+  const [sleepHours, setSleepHours] = useState(() => loadLocally('ankos_sleep_hours', 6.6));
+  const [socialBattery, setSocialBattery] = useState(() => loadLocally('ankos_social_battery', 45));
   const [laundryDate, setLaundryDate] = useState(() => loadLocally('ankos_laundry_date', new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()));
 
   // --- RPG & Level States ---
-  const [characterXP, setCharacterXP] = useState(() => loadLocally('ankos_xp', 20));
+  const [characterXP, setCharacterXP] = useState(() => loadLocally('ankos_xp', 1160)); // Level 12 Focus Monk
 
   // --- Dynamic Customizable Profile Picture ---
-  const [profileAvatar, setProfileAvatar] = useState(() => loadLocally('ankos_profile_avatar', '🤖'));
+  const [profileAvatar, setProfileAvatar] = useState(() => loadLocally('ankos_profile_avatar', '🦊'));
   const [profileAvatarUrl, setProfileAvatarUrl] = useState(() => loadLocally('ankos_profile_avatar_url', ''));
 
   // --- Inventory & Logistics States ---
   const [logistics, setLogistics] = useState(() => loadLocally('ankos_logistics', {
     galon: 70, // in percentage
     gas: 40,
-    kopi: 80,
-    mie: 50
+    kopi: 85,
+    mie: 60
   }));
 
   // --- Financial States ---
-  const [walletAllowance, setWalletAllowance] = useState(() => loadLocally('ankos_allowance', 2500000)); // 2.5 juta IDR
+  const [walletAllowance, setWalletAllowance] = useState(() => loadLocally('ankos_allowance', 3500000)); // Rp 3.500.000 allowance
   const [walletExpenses, setWalletExpenses] = useState(() => loadLocally('ankos_expenses', [
-    { id: 1, title: 'Warteg Akbar', amount: 15000, date: '2026-05-24', category: 'Makan' },
-    { id: 2, title: 'Token Listrik', amount: 100000, date: '2026-05-25', category: 'Tagihan' },
-    { id: 3, title: 'Warkop Kembar', amount: 20000, date: '2026-05-26', category: 'Kopi' }
+    { id: 1, title: 'Warteg Akbar (Makan Siang)', amount: 18000, date: '2026-05-27', category: 'Makan' },
+    { id: 2, title: 'Kopi Susu Aren - Warkop Kiri', amount: 22000, date: '2026-05-27', category: 'Kopi' },
+    { id: 3, title: 'Gojek ke Stasiun', amount: 18500, date: '2026-05-27', category: 'Transport' },
+    { id: 4, title: 'Indomie Kari Ayam 1 Kardus', amount: 112000, date: '2026-05-24', category: 'Logistik' },
+    { id: 5, title: 'Kaos Polos Uniqlo (Wishlist)', amount: 199000, date: '2026-05-23', category: 'Makan' },
+    { id: 6, title: 'Pembelian Domain Web Portofolio', amount: 149000, date: '2026-05-22', category: 'Tagihan' },
+    { id: 7, title: 'Makan Nasi Padang Sederhana', amount: 27000, date: '2026-05-27', category: 'Makan' },
+    { id: 8, title: 'Kopi Cold Brew - Kopi Kenangan', amount: 29000, date: '2026-05-27', category: 'Kopi' },
+    { id: 9, title: 'Tagihan Token Listrik Kamar', amount: 100000, date: '2026-05-25', category: 'Tagihan' },
+    { id: 10, title: 'Indomaret (Cemilan & Sabun)', amount: 84500, date: '2026-05-24', category: 'Logistik' },
+    { id: 11, title: 'Uang Kas Angkatan', amount: 20000, date: '2026-05-26', category: 'Makan' },
+    { id: 12, title: 'Spotify Premium Student (Auto)', amount: 54990, date: '2026-05-26', category: 'Hiburan' },
+    { id: 13, title: 'Bensin Motor & Parkir Kampus', amount: 35000, date: '2026-05-25', category: 'Transport' },
+    { id: 14, title: 'Nasi Goreng Gila (Malam)', amount: 25000, date: '2026-05-26', category: 'Makan' },
+    { id: 15, title: 'Snack Keripik Singkong', amount: 15000, date: '2026-05-26', category: 'Makan' },
+    { id: 16, title: 'Laundry Kilat 3Kg', amount: 24000, date: '2026-05-25', category: 'Logistik' },
+    { id: 17, title: 'Langganan Github Copilot', amount: 152010, date: '2026-05-25', category: 'Tagihan' }
   ]));
 
   // --- Bills/Tokens ---
   const [bills, setBills] = useState(() => loadLocally('ankos_bills', [
     { id: 1, title: 'Uang Kos Bulanan', amount: 800000, daysLeft: 4, category: 'Kos' },
     { id: 2, title: 'Token Listrik Kamar', amount: 100000, daysLeft: 1, category: 'Listrik' },
-    { id: 3, title: 'Paket Data Internet', amount: 75000, daysLeft: 12, category: 'Internet' },
-    { id: 4, title: 'Spotify Premium Kosan', amount: 15000, daysLeft: 2, category: 'Hiburan' }
+    { id: 3, title: 'Paket Data Internet (By.U)', amount: 75000, daysLeft: 12, category: 'Internet' },
+    { id: 4, title: 'Spotify Premium Student', amount: 29900, daysLeft: 2, category: 'Hiburan' }
   ]));
 
   // --- Productivity / Academic States ---
   const [deadlines, setDeadlines] = useState(() => loadLocally('ankos_deadlines', [
-    { id: 1, title: 'Tugas Kuliah Praktikum AI', deadline: 'Besok', priority: 'merah', completed: false },
-    { id: 2, title: 'Beresin Kamar Kos & Cuci Sprei', deadline: 'Minggu ini', priority: 'kuning', completed: false },
-    { id: 3, title: 'Proposal PKM Kewirausahaan', deadline: 'Minggu Depan', priority: 'hijau', completed: false }
+    { id: 1, title: 'Tugas Praktikum Pemrograman AI (MNIST)', deadline: 'Besok', priority: 'merah', completed: false },
+    { id: 2, title: 'Beresin Kamar Kos (Dispenser & Sprei)', deadline: 'Minggu ini', priority: 'kuning', completed: false },
+    { id: 3, title: 'Revisi Proposal PKM Kewirausahaan (AI IoT)', deadline: 'Minggu Depan', priority: 'hijau', completed: false },
+    { id: 4, title: 'Slicing Web Design Portofolio Neubrutalist', deadline: '3 hari lagi', priority: 'kuning', completed: false }
   ]));
 
   const [bolosCounters, setBolosCounters] = useState(() => loadLocally('ankos_bolos', [
     { id: 1, subject: 'Matematika Diskrit', skipped: 1, max: 4 },
     { id: 2, subject: 'Pemrograman Web', skipped: 2, max: 4 },
-    { id: 3, subject: 'Kecerdasan Buatan', skipped: 0, max: 3 }
+    { id: 3, subject: 'Kecerdasan Buatan', skipped: 0, max: 3 },
+    { id: 4, subject: 'Arsitektur Komputer', skipped: 1, max: 3 }
   ]));
 
   const [quickNotes, setQuickNotes] = useState(() => loadLocally('ankos_quick_notes', [
-    { id: 1, text: 'Bayar kas kelas 20 ribu ke ketua tingkat.', time: '26 Mei, 15:40' },
-    { id: 2, text: 'Warteg buka jam 8 pagi, gratis teh hangat es kalau hari Jumat.', time: '26 Mei, 18:22' }
+    { id: 1, text: 'Bayar kas kelas 20 ribu ke ketua tingkat di kampus.', time: 'Hari ini, 15:40' },
+    { id: 2, text: 'Warteg Akbar buka jam 8 pagi, gratis es teh tawar kalau hari Jumat.', time: '26 Mei, 18:22' },
+    { id: 3, text: 'Token listrik bunyi tit-tit, besok pagi harus langsung isi.', time: 'Kemarin, 21:05' }
   ]));
 
   const [rewards, setRewards] = useState(() => loadLocally('ankos_rewards_rpg', [
-    { id: 1, text: "5 Hari Streak Ambis = Kopi Susu Creamy", hoursNeeded: 5, unlocked: false, icon: "☕" },
-    { id: 2, title: "10 Jam Fokus = Checkout Wishlist Tokopedia", hoursNeeded: 10, unlocked: false, icon: "🛍️" },
-    { id: 3, title: "20 Jam Fokus = Beli McD Share Box", hoursNeeded: 20, unlocked: false, icon: "🍔" }
+    { id: 1, title: "5 Hari Streak Ambis = Kopi Susu Creamy Toko Sebelah", hoursNeeded: 5, unlocked: false, icon: "☕" },
+    { id: 2, title: "10 Jam Fokus = Checkout mechanical switches Tokopedia", hoursNeeded: 10, unlocked: false, icon: "🛍️" },
+    { id: 3, title: "20 Jam Fokus = Beli McD Double Cheeseburger Share Box", hoursNeeded: 20, unlocked: false, icon: "🍔" }
   ]));
 
   // --- Toasts system ---
@@ -185,11 +202,13 @@ export function CharacterProvider({ children }) {
   // Calculate level based on XP: Level = floor(XP / 100) + 1
   const characterLevel = Math.floor(characterXP / 100) + 1;
   const xpIntoCurrentLevel = characterXP % 100;
-  let characterTitle = "Anak Kos Pemula";
-  if (characterLevel >= 5) {
-    characterTitle = "Slayer Mager Profesional";
+  let characterTitle = "Productivity Neophyte";
+  if (characterLevel >= 10) {
+    characterTitle = "Focus Monk";
+  } else if (characterLevel >= 5) {
+    characterTitle = "Remote Builder";
   } else if (characterLevel >= 3) {
-    characterTitle = "Anak Kos Bertahan Hidup";
+    characterTitle = "Deep Work Enthusiast";
   }
 
   // --- Helper Mutator Actions ---

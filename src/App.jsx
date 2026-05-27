@@ -205,18 +205,27 @@ function MainAppHub() {
       <div className="max-w-[1680px] w-full mx-auto px-4 py-6 md:px-6 md:py-8 flex flex-col xl:flex-row gap-6 relative z-10 flex-grow">
         
         {/* ================= COLUMN 1: SIDEBAR (DESKTOP / MOBILE DRAWER) ================= */}
-        <div className={`
-          ${focusMode ? 'xl:hidden' : 'xl:block'} xl:relative xl:translate-x-0 xl:bg-transparent xl:p-0 xl:h-auto xl:shadow-none xl:z-auto
-          ${sidebarCollapsed ? 'xl:w-20' : 'xl:w-80'}
-          fixed inset-y-0 left-0 w-80 bg-slate-100/95 p-6 z-[120] border-r border-white/60 transition-all duration-300 ease-out transform backdrop-blur-2xl
-          ${showLeftDrawer ? 'translate-x-0 shadow-premium' : '-translate-x-full xl:translate-x-0'}
-        `}>
+        <div className={[
+          /* ── Mobile drawer: fixed full-height panel ── */
+          'fixed inset-y-0 left-0 w-72 bg-white/80 backdrop-blur-2xl p-6 z-[120] border-r border-white/60 shadow-2xl',
+          'transition-transform duration-300 ease-out transform',
+          showLeftDrawer ? 'translate-x-0' : '-translate-x-full',
+          /* ── Desktop: switch to static column ── */
+          focusMode
+            ? 'xl:hidden'
+            : [
+                'xl:relative xl:inset-auto xl:translate-x-0 xl:bg-transparent xl:p-0 xl:h-auto xl:shadow-none xl:z-auto xl:border-r-0 xl:backdrop-blur-none xl:block',
+                'xl:overflow-hidden xl:shrink-0 xl:transition-[width] xl:duration-300 xl:ease-in-out',
+                sidebarCollapsed ? 'xl:w-[72px]' : 'xl:w-72',
+              ].join(' ')
+        ].join(' ')}>
 
+          {/* Mobile close header */}
           <div className="xl:hidden flex justify-between items-center mb-6">
             <span className="font-extrabold text-slate-800 text-xs tracking-wider font-mono">INTELLIGENCE STATS</span>
             <button 
               onClick={() => setShowLeftDrawer(false)}
-              className="p-1.5 hover:bg-slate-200 border border-slate-300/30 rounded-lg text-slate-500 hover:text-slate-700"
+              className="p-1.5 hover:bg-slate-200 border border-slate-300/30 rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -225,7 +234,7 @@ function MainAppHub() {
         </div>
 
         {/* ================= COLUMN 2: CENTER HUB (RPG STATUS & MODULES) ================= */}
-        <div className={`flex-grow flex flex-col gap-6 min-w-0 ${focusMode ? 'xl:max-w-4xl mx-auto w-full transition-all duration-500' : 'xl:max-w-4xl transition-all duration-500'}`}>
+        <div className={`flex-1 min-w-0 flex flex-col gap-6 transition-all duration-300 ease-in-out ${focusMode ? 'xl:max-w-4xl mx-auto w-full' : ''}`}>
 
           
           {/* Weather & Music Controller Bar */}

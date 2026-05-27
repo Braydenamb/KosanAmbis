@@ -131,7 +131,7 @@ export default function RPGHeader() {
           
           <div className="flex-grow min-w-0">
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-extrabold text-slate-900 tracking-tight leading-none">Anak Kos Alpha</h2>
+              <h2 className="text-base font-extrabold text-slate-900 tracking-tight leading-none">Brayden</h2>
               <span className="bg-brand-500/10 border border-brand-500/25 text-brand-600 font-bold px-1.5 py-0.5 rounded-md text-[8px] tracking-wider uppercase font-mono leading-none">ACTIVE USER</span>
             </div>
             <span className="text-[10px] font-bold text-slate-500 mt-2 block uppercase tracking-widest leading-none font-mono">
