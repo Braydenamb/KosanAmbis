@@ -195,7 +195,7 @@ function MainAppHub() {
       <div className={`max-w-[1680px] w-full mx-auto flex flex-col xl:flex-row relative z-10 flex-grow ${activeCategory === 'overview' ? 'px-4 py-6 md:px-6 md:py-8 gap-6' : 'px-0 pt-0 pb-28 md:px-6 md:py-8 md:gap-6'}`}>
         
         {/* ================= COLUMN 1: SIDEBAR (DESKTOP ONLY) ================= */}
-        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:shrink-0 transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'xl:w-0 xl:opacity-0 xl:mr-[-1.5rem]' : 'xl:w-72 xl:opacity-100'}`}>
+        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:shrink-0 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${sidebarCollapsed || activeCategory !== 'overview' ? 'xl:w-0 xl:opacity-0 xl:mr-[-1.5rem]' : 'xl:w-72 xl:opacity-100'}`}>
           <div className="w-72">
             <Sidebar />
           </div>
@@ -263,8 +263,8 @@ function MainAppHub() {
         </div>{/* end COLUMN 2 */}
 
         {/* ================= COLUMN 3: PANEL RIGHT (DESKTOP ONLY) ================= */}
-        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-80 shrink-0`}>
-          <div className="flex flex-col gap-8">
+        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] shrink-0 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] overflow-hidden ${activeCategory !== 'overview' ? 'w-0 opacity-0 ml-[-1.5rem]' : 'w-80 opacity-100'}`}>
+          <div className="w-80 flex flex-col gap-8">
             <PanelRight />
           </div>
         </div>
