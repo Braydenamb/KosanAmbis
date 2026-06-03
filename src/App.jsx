@@ -242,8 +242,9 @@ function MainAppHub() {
           focusMode
             ? 'xl:hidden'
             : [
-                'xl:relative xl:inset-auto xl:translate-x-0 xl:bg-transparent xl:p-0 xl:h-auto xl:shadow-none xl:z-auto xl:border-r-0 xl:backdrop-blur-none xl:block',
-                'xl:overflow-hidden xl:shrink-0 xl:transition-[width] xl:duration-300 xl:ease-in-out',
+                'xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
+                'xl:inset-auto xl:translate-x-0 xl:bg-transparent xl:p-0 xl:shadow-none xl:z-auto xl:border-r-0 xl:backdrop-blur-none xl:block',
+                'xl:shrink-0 xl:transition-[width] xl:duration-300 xl:ease-in-out',
                 sidebarCollapsed ? 'xl:w-[72px]' : 'xl:w-72',
               ].join(' ')
         ].join(' ')}>
@@ -312,7 +313,7 @@ function MainAppHub() {
 
         {/* ================= COLUMN 3: PANEL RIGHT (STATS & DOMESTIC MODULES) ================= */}
         <div className={`
-          ${focusMode ? 'xl:hidden' : 'xl:block'} xl:relative xl:translate-x-0 xl:bg-transparent xl:p-0 xl:w-80 xl:h-auto xl:shadow-none xl:z-auto
+          ${focusMode ? 'xl:hidden' : 'xl:block'} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:translate-x-0 xl:bg-transparent xl:p-0 xl:w-80 xl:shadow-none xl:z-auto
           fixed inset-y-0 right-0 w-80 bg-slate-100/95 p-6 z-[120] border-l border-white/60 transition-all duration-300 ease-out transform backdrop-blur-2xl
           ${showRightDrawer ? 'translate-x-0 shadow-premium' : 'translate-x-full xl:translate-x-0'}
         `}>
