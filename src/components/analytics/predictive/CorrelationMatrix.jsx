@@ -8,8 +8,8 @@ export default function CorrelationMatrix({ correlations, currentWalletBalance, 
       {/* Spending Burndown SVG Curve Chart */}
       <div className="lg:col-span-8 glass-card p-5 flex flex-col gap-4 border-brand-200/50 bg-white/70">
         <div>
-          <h3 className="text-xs font-black text-slate-800 tracking-wider uppercase font-mono">PROJECTED RUNWAY BURNDOWN CURVE</h3>
-          <p className="text-[10px] text-slate-400 font-mono mt-0.5">30-DAY PREDICTIVE LIQUIDITY ACCELERATION DECAY</p>
+          <h3 className="text-xs font-black text-slate-800 tracking-wider uppercase font-mono">GRAFIK PREDIKSI UANG HABIS</h3>
+          <p className="text-[10px] text-slate-400 font-mono mt-0.5">BERDASARKAN KEBIASAAN JAJAN 30 HARI TERAKHIR</p>
         </div>
 
         {/* SVG Burn-down curve */}
@@ -53,29 +53,29 @@ export default function CorrelationMatrix({ correlations, currentWalletBalance, 
 
           {/* Visual labels on curve */}
           <div className="absolute right-6 bottom-3 bg-rose-500/10 border border-rose-500/25 rounded px-2 py-0.5 text-[8px] font-mono text-rose-600 font-bold animate-pulse pointer-events-none">
-            Projected Balance Empty
+            Saldo Habis Total
           </div>
           <div className="absolute left-6 top-4 bg-slate-900/10 border border-slate-900/25 rounded px-2 py-0.5 text-[8px] font-mono text-slate-800 font-bold pointer-events-none">
-            Balance: Rp {currentWalletBalance.toLocaleString('id-ID')}
+            Saldo Saat Ini: Rp {currentWalletBalance.toLocaleString('id-ID')}
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 text-center mt-1">
           <div className="bg-slate-50 border rounded-2xl p-2.5">
-            <span className="text-[8px] font-bold text-slate-400 block font-mono">MONTHLY BURN EXT.</span>
+            <span className="text-[8px] font-bold text-slate-400 block font-mono">PREDIKSI HABIS SEBULAN</span>
             <span className="text-xs font-black text-slate-800 font-mono">Rp {(financialForecast.dailyBurnRate * 30).toLocaleString('id-ID')}</span>
           </div>
           <div className="bg-slate-50 border rounded-2xl p-2.5">
-            <span className="text-[8px] font-bold text-slate-400 block font-mono">BURN VELOCITY</span>
-            <span className="text-xs font-black text-indigo-600 font-mono">{(currentWalletBalance / 30 / 1000).toFixed(1)}k/Day</span>
+            <span className="text-[8px] font-bold text-slate-400 block font-mono">KECEPATAN HABIS</span>
+            <span className="text-xs font-black text-indigo-600 font-mono">{(currentWalletBalance / 30 / 1000).toFixed(1)}k/Hari</span>
           </div>
           <div className="bg-slate-50 border rounded-2xl p-2.5">
-            <span className="text-[8px] font-bold text-slate-400 block font-mono">WEATHER INDEX</span>
-            <span className="text-xs font-black text-emerald-600 font-mono">Stable</span>
+            <span className="text-[8px] font-bold text-slate-400 block font-mono">STATUS KEUANGAN</span>
+            <span className="text-xs font-black text-emerald-600 font-mono">Cukup Aman</span>
           </div>
           <div className="bg-slate-50 border rounded-2xl p-2.5">
-            <span className="text-[8px] font-bold text-slate-400 block font-mono">CONFIDENCE INTERVAL</span>
-            <span className="text-xs font-black text-slate-700 font-mono">92.4% (R-High)</span>
+            <span className="text-[8px] font-bold text-slate-400 block font-mono">AKURASI AI</span>
+            <span className="text-xs font-black text-slate-700 font-mono">Tinggi (92.4%)</span>
           </div>
         </div>
       </div>
@@ -83,17 +83,17 @@ export default function CorrelationMatrix({ correlations, currentWalletBalance, 
       {/* Dynamic Correlations Matrix Explorer */}
       <div className="lg:col-span-4 glass-card p-5 flex flex-col gap-4 border-brand-200/50 bg-white/70">
         <div>
-          <h3 className="text-xs font-black text-slate-800 tracking-wider uppercase font-mono">CORRELATIONS SPECTRUM MATRIX</h3>
-          <p className="text-[10px] text-slate-400 font-mono mt-0.5">PEARSON COEFFICIENTS EVENT LINK CLUSTERS</p>
+          <h3 className="text-xs font-black text-slate-800 tracking-wider uppercase font-mono">DAMPAK KEBIASAAN (SEBAB-AKIBAT)</h3>
+          <p className="text-[10px] text-slate-400 font-mono mt-0.5">HAL YANG PALING MEMPENGARUHI HIDUP ANDA</p>
         </div>
 
         <div className="flex flex-col gap-2.5">
           {[
-            { id: 'spendVsSleep', label: 'Late-night Spend vs Sleep Quality', val: correlations.spendVsSleep, icon: Moon, desc: 'Negative (Late dinners hurt deep sleep)', type: 'neg' },
-            { id: 'exerciseVsFocus', label: 'Exercise vs Focus Sesi', val: correlations.exerciseVsFocus, icon: Zap, desc: 'Positive (Gym increases concentration)', type: 'pos' },
-            { id: 'hydrationVsMood', label: 'Hydration Ounces vs Mood Stability', val: correlations.hydrationVsMood, icon: Smile, desc: 'Positive (Hydration balances mood swings)', type: 'pos' },
-            { id: 'rainVsCoding', label: 'Rainy Days vs Coding Commits', val: correlations.rainVsCoding, icon: Coffee, desc: 'Positive (Lofi rain fuels code workflow)', type: 'pos' },
-            { id: 'focusVsNextDayEnergy', label: 'Focus Sesi vs Sleep Jam', val: correlations.focusVsNextDayEnergy, icon: BookOpen, desc: 'Negative (Extremely long study causes fatigue)', type: 'neg' },
+            { id: 'spendVsSleep', label: 'Jajan Malam vs Tidur', val: correlations.spendVsSleep, icon: Moon, desc: 'Makan larut malam merusak tidur nyenyak', type: 'neg' },
+            { id: 'exerciseVsFocus', label: 'Olahraga vs Fokus Belajar', val: correlations.exerciseVsFocus, icon: Zap, desc: 'Gym terbukti meningkatkan konsentrasi', type: 'pos' },
+            { id: 'hydrationVsMood', label: 'Minum Air vs Mood', val: correlations.hydrationVsMood, icon: Smile, desc: 'Air putih mencegah emosi meledak-ledak', type: 'pos' },
+            { id: 'rainVsCoding', label: 'Hujan vs Produktivitas', val: correlations.rainVsCoding, icon: Coffee, desc: 'Cuaca hujan = lebih rajin ngoding', type: 'pos' },
+            { id: 'focusVsNextDayEnergy', label: 'Overstudy vs Kelelahan', val: correlations.focusVsNextDayEnergy, icon: BookOpen, desc: 'Belajar diforsir = besoknya langsung drop', type: 'neg' },
           ].map(c => (
             <div 
               key={c.id} 
@@ -109,9 +109,9 @@ export default function CorrelationMatrix({ correlations, currentWalletBalance, 
                 </div>
               </div>
               <div className="text-right shrink-0">
-                <span className={`font-extrabold text-xs font-mono
+                <span className={`font-extrabold text-[10px] uppercase font-mono
                   ${c.type === 'pos' ? 'text-emerald-500' : 'text-rose-500'}`}>
-                  {c.val > 0 ? `+${c.val}` : c.val}
+                  {c.type === 'pos' ? 'Positif' : 'Negatif'}
                 </span>
               </div>
             </div>

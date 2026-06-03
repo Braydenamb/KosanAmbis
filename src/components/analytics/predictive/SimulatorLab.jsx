@@ -10,8 +10,8 @@ export default function SimulatorLab({
   return (
     <div className="glass-card p-5 border-brand-200/50 flex flex-col gap-5 bg-white/70">
       <div>
-        <h3 className="text-xs font-black text-slate-800 tracking-wider uppercase font-mono">🔮 WHAT-IF PREDICTIVE LAB & SCENARIO SANDBOX</h3>
-        <p className="text-[10px] text-slate-400 font-mono mt-0.5">INTERACT WITH SLIDERS TO PROJEKT LIFESTYLE CAUSE-EFFECT IMPACT</p>
+        <h3 className="text-xs font-black text-slate-800 tracking-wider uppercase font-mono">🔮 MESIN WAKTU (SIMULASI MASA DEPAN)</h3>
+        <p className="text-[10px] text-slate-400 font-mono mt-0.5">GESER SLIDER UNTUK MELIHAT APA YANG TERJADI JIKA ANDA MENGUBAH KEBIASAAN</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -23,15 +23,15 @@ export default function SimulatorLab({
               <DollarSign className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[9px] font-bold text-slate-400 block font-mono">SANDBOX SCENARIO 1</span>
-              <h4 className="text-xs font-black uppercase text-slate-700 leading-tight">Reduce late-night food delivery</h4>
+              <span className="text-[9px] font-bold text-slate-400 block font-mono">SIMULASI 1</span>
+              <h4 className="text-xs font-black uppercase text-slate-700 leading-tight">Kurangi Jajan Gofood Malam</h4>
             </div>
           </div>
 
           <div className="flex flex-col gap-2 mt-1">
             <div className="flex items-center justify-between text-[11px] font-bold text-slate-600">
-              <span>Spend Cut:</span>
-              <span className="font-mono text-emerald-600">{spendCutPercentage}% Less</span>
+              <span>Kurangi Porsi:</span>
+              <span className="font-mono text-emerald-600">{spendCutPercentage}% Lebih Hemat</span>
             </div>
             <input 
               type="range"
@@ -45,9 +45,9 @@ export default function SimulatorLab({
           </div>
 
           <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-2.5 mt-2 flex flex-col gap-0.5 text-center">
-            <span className="text-[9px] font-bold text-slate-400 font-mono block">PROJECTED FIN. EXTRA RUNWAY:</span>
-            <span className="text-sm font-black text-emerald-600 font-mono">+{simulatedRunway.extraDays} Hari Tambahan</span>
-            <span className="text-[8px] text-slate-400 font-mono">Runway extend: {simulatedRunway.newRunwayDays} Days total</span>
+            <span className="text-[9px] font-bold text-slate-400 font-mono block">HASILNYA: UANG JAJAN BERTAHAN</span>
+            <span className="text-sm font-black text-emerald-600 font-mono">+{simulatedRunway.extraDays} Hari Lebih Lama</span>
+            <span className="text-[8px] text-slate-400 font-mono">Total sisa hari: {simulatedRunway.newRunwayDays} Hari</span>
           </div>
         </div>
 
@@ -58,15 +58,15 @@ export default function SimulatorLab({
               <Moon className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[9px] font-bold text-slate-400 block font-mono">SANDBOX SCENARIO 2</span>
-              <h4 className="text-xs font-black uppercase text-slate-700 leading-tight">Increase sleep duration</h4>
+              <span className="text-[9px] font-bold text-slate-400 block font-mono">SIMULASI 2</span>
+              <h4 className="text-xs font-black uppercase text-slate-700 leading-tight">Tambah Jam Tidur</h4>
             </div>
           </div>
 
           <div className="flex flex-col gap-2 mt-1">
             <div className="flex items-center justify-between text-[11px] font-bold text-slate-600">
-              <span>Extra Sleep:</span>
-              <span className="font-mono text-indigo-600">+{extraSleepMinutes} Minutes</span>
+              <span>Tambah Tidur:</span>
+              <span className="font-mono text-indigo-600">+{extraSleepMinutes} Menit</span>
             </div>
             <input 
               type="range"
@@ -80,9 +80,9 @@ export default function SimulatorLab({
           </div>
 
           <div className="bg-indigo-500/5 border border-indigo-500/10 rounded-xl p-2.5 mt-2 flex flex-col gap-0.5 text-center">
-            <span className="text-[9px] font-bold text-slate-400 font-mono block">PROJECTED NEXT-DAY STUDY FOCUS:</span>
-            <span className="text-sm font-black text-indigo-600 font-mono">+{simulatedProductivity}% Sesi Durasi</span>
-            <span className="text-[8px] text-slate-400 font-mono">Confidence Level: 87.5% (High-R)</span>
+            <span className="text-[9px] font-bold text-slate-400 font-mono block">HASILNYA: FOKUS BELAJAR BESOK</span>
+            <span className="text-sm font-black text-indigo-600 font-mono">Naik +{simulatedProductivity}%</span>
+            <span className="text-[8px] text-slate-400 font-mono">Berdasarkan pola tidur Anda</span>
           </div>
         </div>
 
@@ -93,14 +93,14 @@ export default function SimulatorLab({
               <Smile className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[9px] font-bold text-slate-400 block font-mono">SANDBOX SCENARIO 3</span>
-              <h4 className="text-xs font-black uppercase text-slate-700 leading-tight">Increase daily water intake</h4>
+              <span className="text-[9px] font-bold text-slate-400 block font-mono">SIMULASI 3</span>
+              <h4 className="text-xs font-black uppercase text-slate-700 leading-tight">Perbanyak Minum Air Putih</h4>
             </div>
           </div>
 
           <div className="flex flex-col gap-2 mt-1">
             <div className="flex items-center justify-between text-[11px] font-bold text-slate-600">
-              <span>Extra Intake:</span>
+              <span>Tambah Minum:</span>
               <span className="font-mono text-blue-600">+{hydrationIncrease} oz (~3 Gelas)</span>
             </div>
             <input 
@@ -115,9 +115,9 @@ export default function SimulatorLab({
           </div>
 
           <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-2.5 mt-2 flex flex-col gap-0.5 text-center">
-            <span className="text-[9px] font-bold text-slate-400 font-mono block">PROJECTED DAILY MOOD STABILITY:</span>
-            <span className="text-sm font-black text-blue-600 font-mono">+{simulatedMood}% Stabilitas Indeks</span>
-            <span className="text-[8px] text-slate-400 font-mono">No false positive correlation risk detected</span>
+            <span className="text-[9px] font-bold text-slate-400 font-mono block">HASILNYA: MOOD DAN EMOSI</span>
+            <span className="text-sm font-black text-blue-600 font-mono">Lebih Sabar +{simulatedMood}%</span>
+            <span className="text-[8px] text-slate-400 font-mono">Aman dari emosi meledak-ledak</span>
           </div>
         </div>
 

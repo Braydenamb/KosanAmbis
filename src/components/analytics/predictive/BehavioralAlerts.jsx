@@ -6,12 +6,12 @@ export default function BehavioralAlerts({ behavioralAlerts }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 font-mono">ACTIVE BEHAVIORAL RISKS & WARNINGS</span>
+      <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 font-mono">PERINGATAN BAHAYA KEBIASAAN</span>
       <div className="flex flex-col gap-3.5">
         {behavioralAlerts.map(alert => (
           <div 
             key={alert.id}
-            className={`glass-card p-4.5 border border-l-[6px] flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/70
+            className={`glass-card p-4 border border-l-[6px] flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/70
               ${alert.type === 'danger' ? 'border-rose-400 border-l-rose-500 bg-rose-500/5' : 
                 alert.type === 'warning' ? 'border-amber-400 border-l-amber-500 bg-amber-500/5' : 
                 'border-indigo-400 border-l-indigo-500 bg-indigo-500/5'}`}
@@ -27,7 +27,7 @@ export default function BehavioralAlerts({ behavioralAlerts }) {
                 <h4 className="text-xs font-black uppercase text-slate-800 leading-tight tracking-wider font-mono">{alert.title}</h4>
                 <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{alert.desc}</p>
                 <p className="text-[10px] font-bold text-slate-600 mt-2 font-mono flex items-center gap-1">
-                  <Zap className="w-3.5 h-3.5 text-amber-500 shrink-0" /> Advice: {alert.advice}
+                  <Zap className="w-3.5 h-3.5 text-amber-500 shrink-0" /> Saran AI: {alert.advice}
                 </p>
               </div>
             </div>
