@@ -221,6 +221,17 @@ function MainAppHub() {
       {/* 5. MAIN CENTRAL CONTENT LAYOUT CONTAINER */}
       <div className="max-w-[1680px] w-full mx-auto px-4 py-6 md:px-6 md:py-8 flex flex-col xl:flex-row gap-6 relative z-10 flex-grow">
         
+        {/* Backdrop overlay for drawers */}
+        {(showLeftDrawer || showRightDrawer) && (
+          <div 
+            onClick={() => {
+              setShowLeftDrawer(false);
+              setShowRightDrawer(false);
+            }}
+            className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[110] xl:hidden"
+          />
+        )}
+
         {/* ================= COLUMN 1: SIDEBAR (DESKTOP / MOBILE DRAWER) ================= */}
         <div className={[
           /* ── Mobile drawer: fixed full-height panel ── */
@@ -322,17 +333,6 @@ function MainAppHub() {
         </div>
 
       </div>
-
-      {/* Backdrop overlay for drawers */}
-      {(showLeftDrawer || showRightDrawer) && (
-        <div 
-          onClick={() => {
-            setShowLeftDrawer(false);
-            setShowRightDrawer(false);
-          }}
-          className="fixed inset-0 bg-slate-900/10 z-[110] xl:hidden"
-        />
-      )}
 
       {/* ── FLOATING BOTTOM DOCK ── */}
       <FloatingDock

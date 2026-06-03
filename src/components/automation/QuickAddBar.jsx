@@ -345,7 +345,7 @@ export default function QuickAddBar() {
         )}
 
         {/* ── QUICK SUGGESTION CHIPS ── */}
-        {isExpanded && !inputText && !showRecents && (
+        {isExpanded && !inputText && (
           <div className="px-4 pb-4">
             <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest font-mono mb-2 flex items-center gap-1">
               <Sparkles className="w-2.5 h-2.5" /> Quick shortcuts
