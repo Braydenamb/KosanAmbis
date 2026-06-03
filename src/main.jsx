@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { AtmosphereProvider } from './context/AtmosphereContext'
 import { NotificationProvider } from './context/NotificationContext'
 import { AutomationProvider } from './context/AutomationContext'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')).render(
         <NotificationProvider>
           <AutomationProvider>
             <App />
+            <SpeedInsights />
           </AutomationProvider>
         </NotificationProvider>
       </AtmosphereProvider>
