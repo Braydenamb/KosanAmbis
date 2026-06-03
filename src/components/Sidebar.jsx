@@ -73,7 +73,7 @@ export default function Sidebar({ collapsed = false }) {
   return (
     <aside className={`w-full flex flex-col gap-4 lg:gap-6 overflow-hidden transition-all duration-300 ease-in-out ${collapsed ? 'items-center' : 'items-stretch'}`}>
       {/* 0. BRAND CARD */}
-      <div className={`glass-card relative group transition-all duration-300 ease-in-out w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-6 flex flex-col gap-4 overflow-hidden'}`} title={collapsed ? "KosanAmbis" : ""}>
+      <div className={`xl:hidden glass-card relative group transition-all duration-300 ease-in-out w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-6 flex flex-col gap-4 overflow-hidden'}`} title={collapsed ? "KosanAmbis" : ""}>
         <div className="absolute top-0 right-0 w-24 h-24 bg-brand-200/25 rounded-full blur-2xl group-hover:bg-brand-300/35 transition-all duration-300"></div>
         <div className={`flex items-center w-full min-w-0 transition-all duration-500 ease-in-out ${collapsed ? 'justify-center h-14 w-14 shrink-0' : 'gap-4 justify-start'}`}>
           <div className={`transition-all duration-500 shrink-0 flex items-center justify-center ${collapsed ? 'p-0 bg-transparent border-transparent text-brand-600 w-14 h-14' : 'p-3 bg-brand-500/10 border border-brand-500/20 rounded-2xl text-brand-600 shadow-sm'}`}>

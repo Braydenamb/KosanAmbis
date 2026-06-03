@@ -45,7 +45,7 @@ export default function FloatingDock({ items = [], isDrawerOpen = false }) {
             border: '1px solid rgba(255,255,255,0.7)',
             boxShadow: '0 12px 40px rgba(15,23,42,0.16), 0 1px 0 rgba(255,255,255,0.8) inset',
           }}
-          className="flex items-center justify-between gap-1 px-2 py-2 rounded-[28px] w-full max-w-md"
+          className="flex items-center justify-start gap-1 px-2 py-2 rounded-[28px] w-full max-w-[90vw] overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {mobileItems.map(item => (
             <MobileTab key={item.id} item={item} />
@@ -67,12 +67,13 @@ function MobileTab({ item }) {
   return (
     <button
       onClick={item.onClick}
-      className="flex flex-col items-center justify-center p-2.5 rounded-[20px] cursor-pointer select-none relative focus:outline-none active:scale-95 transition-all duration-300 ease-out"
+      className="flex flex-col items-center justify-center p-2.5 rounded-[20px] cursor-pointer select-none relative focus:outline-none active:scale-95 transition-all duration-300 ease-out shrink-0"
       aria-label={item.label}
       style={{
         background: item.active ? 'rgba(99,102,241,0.12)' : 'transparent',
         transform: item.active ? 'translateY(-2px)' : 'none',
-        flex: 1,
+        flex: '0 0 auto',
+        minWidth: '4.5rem',
       }}
     >
       {/* Icon */}
