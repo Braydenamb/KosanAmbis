@@ -1,19 +1,19 @@
 import React from 'react';
-import { 
-  Palette, LayoutGrid, Compass, Wind, Sun, CloudSnow, 
-  Leaf, Sliders, Eye, Download, Keyboard, EyeOff 
-} from 'lucide-react';
+import { Palette, Flame, Moon, Droplet, Smile } from 'lucide-react';
 
 export default function HeatmapControls({
   yearDataLength,
-  layout, setLayout,
-  seasonFilter, setSeasonFilter,
-  zoomScale, setZoomScale,
-  colorblindMode, setColorblindMode,
-  onExportPoster
+  activeMetric, setActiveMetric
 }) {
+  const metrics = [
+    { id: 'focus', label: 'Focus Hours', icon: Flame, colorClass: 'text-brand-600 bg-brand-50 border-brand-200 hover:bg-brand-100' },
+    { id: 'sleep', label: 'Sleep', icon: Moon, colorClass: 'text-indigo-600 bg-indigo-50 border-indigo-200 hover:bg-indigo-100' },
+    { id: 'mood', label: 'Mood', icon: Smile, colorClass: 'text-emerald-600 bg-emerald-50 border-emerald-200 hover:bg-emerald-100' },
+    { id: 'hydration', label: 'Hydration', icon: Droplet, colorClass: 'text-sky-600 bg-sky-50 border-sky-200 hover:bg-sky-100' }
+  ];
+
   return (
-    <div className="flex flex-wrap items-center gap-2 px-5 py-3.5 border-b border-slate-100/70">
+    <div className="flex flex-wrap items-center gap-4 px-5 py-3.5 border-b border-slate-100/70">
       
       {/* Title */}
       <div className="flex items-center gap-2 mr-auto">
@@ -24,96 +24,29 @@ export default function HeatmapControls({
         </span>
       </div>
 
-      {/* Layout pills */}
-      <div className="flex gap-1">
-        {[
-          { id: 'grid',   label: 'Grid',   icon: LayoutGrid },
-          { id: 'radial', label: 'Radial', icon: Compass },
-          { id: 'ribbon', label: 'Ribbon', icon: Wind },
-        ].map(l => {
-          const Icon = l.icon;
+      {/* Metric Toggles */}
+      <div className="flex gap-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {metrics.map(m => {
+          const Icon = m.icon;
+          const isActive = activeMetric === m.id;
+          
           return (
             <button
-              key={l.id}
-              onClick={() => setLayout(l.id)}
-              title={`Layout: ${l.label}`}
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[9px] font-black font-mono uppercase tracking-wide transition-all active:scale-95 cursor-pointer border ${
-                layout === l.id
-                  ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+              key={m.id}
+              onClick={() => setActiveMetric(m.id)}
+              title={`View ${m.label}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black font-mono uppercase tracking-wide transition-all active:scale-95 cursor-pointer border shrink-0 ${
+                isActive
+                  ? m.colorClass + ' shadow-sm'
                   : 'bg-white/60 text-slate-500 border-slate-200/70 hover:text-slate-800 hover:bg-white'
               }`}
             >
-              <Icon className="w-3 h-3" />
-              <span className="hidden sm:inline">{l.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Season pills */}
-      <div className="flex gap-1">
-        {[
-          { id: 'spring', icon: Leaf,      color: 'text-emerald-600 bg-emerald-50  border-emerald-200' },
-          { id: 'summer', icon: Sun,       color: 'text-amber-600   bg-amber-50    border-amber-200'   },
-          { id: 'autumn', icon: Wind,      color: 'text-orange-600  bg-orange-50   border-orange-200'  },
-          { id: 'winter', icon: CloudSnow, color: 'text-sky-600     bg-sky-50      border-sky-200'     },
-        ].map(s => {
-          const Icon = s.icon;
-          return (
-            <button
-              key={s.id}
-              onClick={() => setSeasonFilter(s.id)}
-              title={`Season: ${s.id}`}
-              className={`p-1.5 rounded-xl border transition-all cursor-pointer active:scale-90 ${
-                seasonFilter === s.id ? s.color : 'bg-white/60 border-slate-200/70 text-slate-400 hover:text-slate-600'
-              }`}
-            >
               <Icon className="w-3.5 h-3.5" />
+              <span>{m.label}</span>
             </button>
           );
         })}
       </div>
-
-      {/* Zoom slider */}
-      <div className="flex items-center gap-1.5 hidden md:flex">
-        <Sliders className="w-3 h-3 text-slate-400 shrink-0" />
-        <input
-          type="range" min="0.7" max="1.8" step="0.1"
-          value={zoomScale}
-          onChange={e => setZoomScale(parseFloat(e.target.value))}
-          className="w-20 accent-slate-800 cursor-ew-resize h-1 bg-slate-200 rounded-lg appearance-none"
-          title="Zoom"
-        />
-      </div>
-
-      {/* Pattern toggle */}
-      <button
-        onClick={() => setColorblindMode(!colorblindMode)}
-        title={colorblindMode ? 'Pattern ON' : 'Pattern OFF'}
-        className={`p-1.5 rounded-xl border transition-all cursor-pointer active:scale-95 ${
-          colorblindMode
-            ? 'bg-indigo-100 border-indigo-200 text-indigo-700'
-            : 'bg-white/60 border-slate-200/70 text-slate-400 hover:text-slate-600'
-        }`}
-      >
-        {colorblindMode ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-      </button>
-
-      {/* Export button */}
-      <button
-        onClick={onExportPoster}
-        title="Export Gallery Poster"
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-[9px] font-black font-mono uppercase tracking-wide border border-slate-900 shadow-md hover:bg-slate-800 active:scale-95 cursor-pointer transition-all group overflow-hidden relative"
-      >
-        <div className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-20deg] group-hover:left-full left-[-50%] transition-all duration-500" />
-        <Download className="w-3.5 h-3.5 text-brand-400" />
-        <span className="hidden sm:inline">Export</span>
-      </button>
-
-      {/* Keyboard hint */}
-      <kbd className="hidden lg:inline-flex items-center gap-1 px-2 py-1 text-[8px] font-black text-slate-400 bg-white/60 border border-slate-200 rounded-lg font-mono">
-        <Keyboard className="w-3 h-3" /> Nav
-      </kbd>
     </div>
   );
 }
