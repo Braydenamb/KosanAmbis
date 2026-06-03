@@ -121,10 +121,6 @@ function MainAppHub() {
   // --- Category Tabs Navigation ---
   const [activeCategory, setActiveCategory] = useState('overview');
 
-  // --- Mobile Drawer Toggles ---
-  const [showLeftDrawer, setShowLeftDrawer] = useState(false);
-  const [showRightDrawer, setShowRightDrawer] = useState(false);
-
   return (
     <div className={`min-h-screen text-slate-700 flex flex-col relative select-none
       pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-28
@@ -145,18 +141,6 @@ function MainAppHub() {
         
         {/* Left section: Brand & Collapse triggers */}
         <div className="flex items-center gap-4">
-          {/* Mobile drawer toggle */}
-          <button 
-            onClick={() => {
-              setShowLeftDrawer(true);
-              setShowRightDrawer(false);
-            }}
-            className="xl:hidden p-2.5 hover:bg-slate-100/60 border border-white/50 rounded-xl transition-all text-slate-600 cursor-pointer animate-pulse"
-            aria-label="Open Side Menu"
-          >
-            <Menu className="w-4 h-4" />
-          </button>
-
           {/* Desktop collapsible toggle */}
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -203,17 +187,6 @@ function MainAppHub() {
             🎨 {uiMode === 'neubrutalist' ? 'Neubrutalist OS' : 'Liquid Glass OS'}
           </span>
 
-          {/* Quick stats right drawer toggle for mobile */}
-          <button 
-            onClick={() => {
-              setShowRightDrawer(true);
-              setShowLeftDrawer(false);
-            }}
-            className="xl:hidden p-2.5 hover:bg-slate-100/60 rounded-xl transition-all text-brand-600 border border-white/50 cursor-pointer"
-            aria-label="Open Stats Menu"
-          >
-            <Grid className="w-4 h-4" />
-          </button>
         </div>
 
       </header>
@@ -221,44 +194,8 @@ function MainAppHub() {
       {/* 5. MAIN CENTRAL CONTENT LAYOUT CONTAINER */}
       <div className="max-w-[1680px] w-full mx-auto px-4 py-6 md:px-6 md:py-8 flex flex-col xl:flex-row gap-6 relative z-10 flex-grow">
         
-        {/* Backdrop overlay for drawers */}
-        {(showLeftDrawer || showRightDrawer) && (
-          <div 
-            onClick={() => {
-              setShowLeftDrawer(false);
-              setShowRightDrawer(false);
-            }}
-            className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[110] xl:hidden"
-          />
-        )}
-
-        {/* ================= COLUMN 1: SIDEBAR (DESKTOP / MOBILE DRAWER) ================= */}
-        <div className={[
-          /* ── Mobile drawer: fixed full-height panel ── */
-          'fixed inset-y-0 left-0 w-72 bg-white/80 backdrop-blur-2xl p-6 z-[120] border-r border-white/60 shadow-2xl',
-          'transition-transform duration-300 ease-out transform',
-          showLeftDrawer ? 'translate-x-0' : '-translate-x-full',
-          /* ── Desktop: switch to static column ── */
-          focusMode
-            ? 'xl:hidden'
-            : [
-                'xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]',
-                'xl:inset-auto xl:translate-x-0 xl:bg-transparent xl:p-0 xl:shadow-none xl:z-auto xl:border-r-0 xl:backdrop-blur-none xl:block',
-                'xl:shrink-0 xl:transition-[width] xl:duration-300 xl:ease-in-out',
-                sidebarCollapsed ? 'xl:w-[72px]' : 'xl:w-72',
-              ].join(' ')
-        ].join(' ')}>
-
-          {/* Mobile close header */}
-          <div className="xl:hidden flex justify-between items-center mb-6">
-            <span className="font-extrabold text-slate-800 text-xs tracking-wider font-mono">INTELLIGENCE STATS</span>
-            <button 
-              onClick={() => setShowLeftDrawer(false)}
-              className="p-1.5 hover:bg-slate-200 border border-slate-300/30 rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+        {/* ================= COLUMN 1: SIDEBAR (DESKTOP ONLY) ================= */}
+        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:shrink-0 xl:transition-[width] xl:duration-300 xl:ease-in-out ${sidebarCollapsed ? 'xl:w-[72px]' : 'xl:w-72'}`}>
           <Sidebar collapsed={sidebarCollapsed} />
         </div>
 
@@ -269,6 +206,11 @@ function MainAppHub() {
           {/* ═══ PAGE CONTENT AREA (full-width, dock handles nav) ═══ */}
           <div className="flex-1 min-w-0 flex flex-col gap-6">
 
+            {/* ── MOBILE HORIZONTAL SIDEBAR (TOP) ── */}
+            <div className="xl:hidden w-full overflow-hidden">
+              <Sidebar collapsed={false} isMobileMode={true} />
+            </div>
+
             {/* ── OVERVIEW ── */}
             {activeCategory === 'overview' && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
@@ -276,6 +218,14 @@ function MainAppHub() {
                 <div className="col-span-1 lg:col-span-12"><RPGHeader /></div>
                 <div className="col-span-1 lg:col-span-12"><InsightPanel /></div>
                 <div className="col-span-1 lg:col-span-12"><EcosystemCommandCenter rainActive={rainActive} /></div>
+                
+                {/* ── MOBILE PANEL RIGHT (BOTTOM) ── */}
+                <div className="col-span-1 lg:col-span-12 xl:hidden mt-2">
+                  <h3 className="font-extrabold text-slate-800 text-xs tracking-wider font-mono mb-4">ANALYTICS & MODULES</h3>
+                  <div className="flex flex-col gap-6">
+                    <PanelRight />
+                  </div>
+                </div>
               </div>
             )}
             {activeCategory === 'tapestry' && (
@@ -311,23 +261,8 @@ function MainAppHub() {
           </div>{/* end PAGE CONTENT */}
         </div>{/* end COLUMN 2 */}
 
-        {/* ================= COLUMN 3: PANEL RIGHT (STATS & DOMESTIC MODULES) ================= */}
-        <div className={`
-          ${focusMode ? 'xl:hidden' : 'xl:block'} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:translate-x-0 xl:bg-transparent xl:p-0 xl:w-80 xl:shadow-none xl:z-auto
-          fixed inset-y-0 right-0 w-80 bg-slate-100/95 p-6 z-[120] border-l border-white/60 transition-all duration-300 ease-out transform backdrop-blur-2xl
-          ${showRightDrawer ? 'translate-x-0 shadow-premium' : 'translate-x-full xl:translate-x-0'}
-        `}>
-
-          <div className="xl:hidden flex justify-between items-center mb-6">
-            <span className="font-extrabold text-slate-800 text-xs tracking-wider font-mono">ANALYTICS & STREAKS</span>
-            <button 
-              onClick={() => setShowRightDrawer(false)}
-              className="p-1.5 hover:bg-slate-200 border border-slate-300/30 rounded-lg text-slate-500 hover:text-slate-700"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-          
+        {/* ================= COLUMN 3: PANEL RIGHT (DESKTOP ONLY) ================= */}
+        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-80 shrink-0`}>
           <div className="flex flex-col gap-8">
             <PanelRight />
           </div>

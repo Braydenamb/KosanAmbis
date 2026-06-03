@@ -3,7 +3,7 @@ import { useCharacter } from '../context/CharacterContext';
 import { Flame, Droplet, Moon, Plus, Minus, User, Shield, Sparkles } from 'lucide-react';
 import KineticCounter from './ui/KineticCounter';
 
-export default function Sidebar({ collapsed = false }) {
+export default function Sidebar({ collapsed = false, isMobileMode = false }) {
   const {
     focusHours,
     waterIntake,
@@ -71,9 +71,9 @@ export default function Sidebar({ collapsed = false }) {
 
   // Compact Render Mode for Responsive Collapsed State
   return (
-    <aside className={`w-full flex flex-col gap-4 lg:gap-6 overflow-hidden transition-all duration-300 ease-in-out ${collapsed ? 'items-center' : 'items-stretch'}`}>
+    <aside className={`w-full flex transition-all duration-300 ease-in-out ${isMobileMode ? 'flex-row overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-2 items-stretch gap-4' : 'flex-col gap-4 lg:gap-6 overflow-hidden ' + (collapsed ? 'items-center' : 'items-stretch')}`}>
       {/* 0. BRAND CARD */}
-      <div className={`xl:hidden glass-card relative group transition-all duration-300 ease-in-out w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-6 flex flex-col gap-4 overflow-hidden'}`} title={collapsed ? "KosanAmbis" : ""}>
+      <div className={`hidden glass-card relative group transition-all duration-300 ease-in-out w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-6 flex flex-col gap-4 overflow-hidden'}`} title={collapsed ? "KosanAmbis" : ""}>
         <div className="absolute top-0 right-0 w-24 h-24 bg-brand-200/25 rounded-full blur-2xl group-hover:bg-brand-300/35 transition-all duration-300"></div>
         <div className={`flex items-center w-full min-w-0 transition-all duration-500 ease-in-out ${collapsed ? 'justify-center h-14 w-14 shrink-0' : 'gap-4 justify-start'}`}>
           <div className={`transition-all duration-500 shrink-0 flex items-center justify-center ${collapsed ? 'p-0 bg-transparent border-transparent text-brand-600 w-14 h-14' : 'p-3 bg-brand-500/10 border border-brand-500/20 rounded-2xl text-brand-600 shadow-sm'}`}>
@@ -87,7 +87,7 @@ export default function Sidebar({ collapsed = false }) {
       </div>
 
       {/* 1. STATUS MODE */}
-      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-5 gap-3'}`} title={collapsed ? `Core Operating State: ${statusMode.text}` : ''}>
+      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out ${isMobileMode ? 'min-w-[15.5rem] snap-center shrink-0 p-4 gap-3' : `w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-5 gap-3'}`}`} title={collapsed ? `Core Operating State: ${statusMode.text}` : ''}>
         
         {/* COLLAPSED VIEW */}
         <div className={`transition-all duration-500 ease-in-out flex items-center justify-center ${collapsed ? 'opacity-100 max-h-14 w-14 h-14' : 'opacity-0 max-h-0 pointer-events-none overflow-hidden'}`}>
@@ -111,7 +111,7 @@ export default function Sidebar({ collapsed = false }) {
       </div>
 
       {/* 2. STREAK MODE AMBIS */}
-      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-5 gap-3'}`} title={collapsed ? `Streak Integrity: ${streakDays} Days` : ''}>
+      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out ${isMobileMode ? 'min-w-[15.5rem] snap-center shrink-0 p-4 gap-3' : `w-full ${collapsed ? 'p-0 items-center justify-center h-14 max-w-[56px] rounded-full overflow-hidden mx-auto' : 'p-5 gap-3'}`}`} title={collapsed ? `Streak Integrity: ${streakDays} Days` : ''}>
         
         {/* COLLAPSED VIEW */}
         <div className={`transition-all duration-500 ease-in-out flex items-center justify-center ${collapsed ? 'opacity-100 max-h-14 w-14 h-14' : 'opacity-0 max-h-0 pointer-events-none overflow-hidden'}`}>
@@ -151,7 +151,7 @@ export default function Sidebar({ collapsed = false }) {
       </div>
 
       {/* 3. WATER INTAKE TRACKER */}
-      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out w-full ${collapsed ? 'relative overflow-visible p-0 items-center justify-center h-14 max-w-[56px] rounded-full gap-0 mx-auto' : 'p-5 gap-4'}`} title={collapsed ? `Water Hydration: ${waterIntake} glasses` : ''}>
+      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out ${isMobileMode ? 'min-w-[15.5rem] snap-center shrink-0 p-4 gap-3 justify-between' : `w-full ${collapsed ? 'relative overflow-visible p-0 items-center justify-center h-14 max-w-[56px] rounded-full gap-0 mx-auto' : 'p-5 gap-4'}`}`} title={collapsed ? `Water Hydration: ${waterIntake} glasses` : ''}>
         
         {/* COLLAPSED VIEW */}
         <div className={`transition-all duration-500 ease-in-out flex items-center justify-center relative ${collapsed ? 'opacity-100 max-h-14 w-14 h-14' : 'opacity-0 max-h-0 pointer-events-none overflow-hidden'}`}>
@@ -207,7 +207,7 @@ export default function Sidebar({ collapsed = false }) {
       </div>
 
       {/* 4. SLEEP TRACKER */}
-      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out w-full ${collapsed ? 'relative overflow-visible p-0 items-center justify-center h-14 max-w-[56px] rounded-full gap-0 mx-auto' : 'p-5 gap-4'}`} title={collapsed ? `Sleep Monitors: ${sleepHours} hours` : ''}>
+      <div className={`glass-card flex flex-col transition-all duration-300 ease-in-out ${isMobileMode ? 'min-w-[15.5rem] snap-center shrink-0 p-4 gap-3 justify-between' : `w-full ${collapsed ? 'relative overflow-visible p-0 items-center justify-center h-14 max-w-[56px] rounded-full gap-0 mx-auto' : 'p-5 gap-4'}`}`} title={collapsed ? `Sleep Monitors: ${sleepHours} hours` : ''}>
         
         {/* COLLAPSED VIEW */}
         <div className={`transition-all duration-500 ease-in-out flex items-center justify-center relative ${collapsed ? 'opacity-100 max-h-14 w-14 h-14' : 'opacity-0 max-h-0 pointer-events-none overflow-hidden'}`}>
