@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCharacter } from '../../context/CharacterContext';
-import { Landmark, Check, Copy, Users, Settings } from 'lucide-react';
+import { Landmark, Check, Copy, Users, Settings, Pencil, Save, X } from 'lucide-react';
 import KineticCounter from '../ui/KineticCounter';
 
 export default function FinanceModule() {
@@ -17,6 +17,25 @@ export default function FinanceModule() {
   const [totalBill, setTotalBill] = useState(120000);
   const [peopleCount, setPeopleCount] = useState(3);
   const [presetActive, setPresetActive] = useState('');
+
+  // --- Edit Bill States ---
+  const [editingBillId, setEditingBillId] = useState(null);
+  const [editForm, setEditForm] = useState({ title: '', amount: 0, daysLeft: 0 });
+
+  const handleEditClick = (bill) => {
+    setEditingBillId(bill.id);
+    setEditForm({ title: bill.title, amount: bill.amount, daysLeft: bill.daysLeft });
+  };
+
+  const handleSaveEdit = () => {
+    setBills(prev => prev.map(b => b.id === editingBillId ? { ...b, ...editForm } : b));
+    setEditingBillId(null);
+    addToast('✅ Matriks akun & tagihan diperbarui.');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingBillId(null);
+  };
 
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('id-ID', {
@@ -67,6 +86,43 @@ export default function FinanceModule() {
 
           <div className="flex flex-col gap-3">
             {bills.map(bill => {
+              if (editingBillId === bill.id) {
+                return (
+                  <div key={bill.id} className="p-3.5 rounded-2xl border flex flex-col gap-3 transition-all duration-300 border-white/60 bg-white/50">
+                    <input 
+                      type="text" 
+                      value={editForm.title} 
+                      onChange={(e) => setEditForm({...editForm, title: e.target.value})}
+                      className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-brand-500"
+                    />
+                    <div className="flex gap-2">
+                      <div className="flex flex-col gap-1 w-full">
+                        <label className="text-[9px] font-bold text-slate-400 uppercase">Amount (Rp)</label>
+                        <input 
+                          type="number" 
+                          value={editForm.amount} 
+                          onChange={(e) => setEditForm({...editForm, amount: Number(e.target.value)})}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-brand-500"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1 w-24 shrink-0">
+                        <label className="text-[9px] font-bold text-slate-400 uppercase">Days Left</label>
+                        <input 
+                          type="number" 
+                          value={editForm.daysLeft} 
+                          onChange={(e) => setEditForm({...editForm, daysLeft: Number(e.target.value)})}
+                          className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-brand-500"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-2 justify-end mt-1">
+                      <button onClick={handleCancelEdit} className="p-2 text-slate-500 hover:text-rose-600 rounded-lg bg-white border border-slate-200 hover:border-rose-200 transition-colors cursor-pointer"><X className="w-4 h-4"/></button>
+                      <button onClick={handleSaveEdit} className="p-2 text-white bg-brand-500 hover:bg-brand-600 rounded-lg transition-colors cursor-pointer"><Save className="w-4 h-4"/></button>
+                    </div>
+                  </div>
+                );
+              }
+
               let tagColor = 'border-blue-100 bg-blue-50 text-blue-600';
               let borderCard = 'border-white/60 bg-white/30';
               if (bill.daysLeft <= 1) {
@@ -96,12 +152,21 @@ export default function FinanceModule() {
                     </div>
                   </div>
 
-                  <button 
-                    onClick={() => handlePayBill(bill)}
-                    className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[10px] font-bold transition-all active:scale-95 flex items-center gap-1 shrink-0 cursor-pointer self-start md:self-center"
-                  >
-                    Clear Bill
-                  </button>
+                  <div className="flex items-center gap-2 self-start md:self-center">
+                    <button
+                      onClick={() => handleEditClick(bill)}
+                      className="p-2 text-slate-400 hover:text-brand-600 bg-white/50 hover:bg-white rounded-xl border border-slate-200 transition-all active:scale-95 cursor-pointer"
+                      title="Edit Bill"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button 
+                      onClick={() => handlePayBill(bill)}
+                      className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[10px] font-bold transition-all active:scale-95 flex items-center gap-1 shrink-0 cursor-pointer"
+                    >
+                      Clear Bill
+                    </button>
+                  </div>
                 </div>
               );
             })}
