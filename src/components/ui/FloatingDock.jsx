@@ -216,24 +216,20 @@ function DesktopDockItem({ item, isTool = false }) {
 
         {/* Badge */}
         {item.badge > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1
-                           rounded-full bg-rose-500 text-white text-[9px]
-                           font-black font-mono flex items-center justify-center
-      </span>
+          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-rose-500 text-white text-[9px] font-black font-mono flex items-center justify-center border-[2px] border-white shadow-sm leading-none">
+            {item.badge > 9 ? '9+' : item.badge}
+          </span>
+        )}
+      </div>
 
-      {/* Active dot */}
+      {/* Active Dot */}
       <span
         style={{
-          display: 'block',
           width: item.active ? 4 : 0,
           height: item.active ? 4 : 0,
-          marginTop: 2,
-          borderRadius: '50%',
-          background: '#6366f1',
-          boxShadow: item.active ? '0 0 6px #818cf8' : 'none',
           opacity: item.active ? 1 : 0,
-          transition: 'width 0.2s ease, height 0.2s ease, opacity 0.2s ease',
         }}
+        className="block rounded-full bg-brand-500 shadow-[0_0_6px_#818cf8] transition-all duration-300 mt-1"
       />
     </button>
   );
