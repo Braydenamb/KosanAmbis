@@ -74,7 +74,7 @@ export default function FinanceModule() {
   return (
     <div className="flex flex-col gap-6">
       {/* 1. BILL TRACKER ROW */}
-      <div className="glass-card p-5 flex flex-col justify-between">
+      <div className="glass-card p-5 rounded-none border-x-0 md:rounded-[var(--ui-card-radius)] md:border-x flex flex-col justify-between">
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-[10px] font-black text-slate-500 flex items-center gap-2 uppercase tracking-widest font-mono">
@@ -175,7 +175,7 @@ export default function FinanceModule() {
       </div>
 
       {/* 2. SPLIT BILL CALCULATOR */}
-      <div className="glass-card p-5">
+      <div className="glass-card p-5 rounded-none border-x-0 md:rounded-[var(--ui-card-radius)] md:border-x">
         <h3 className="text-[10px] font-black text-slate-500 flex items-center gap-2 uppercase tracking-widest font-mono mb-4">
           <Users className="w-4 h-4 text-brand-500" />
           LIQUIDITY PATUNGAN SHARES

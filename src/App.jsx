@@ -192,7 +192,7 @@ function MainAppHub() {
       </header>
 
       {/* 5. MAIN CENTRAL CONTENT LAYOUT CONTAINER */}
-      <div className="max-w-[1680px] w-full mx-auto px-4 py-6 md:px-6 md:py-8 flex flex-col xl:flex-row gap-6 relative z-10 flex-grow">
+      <div className={`max-w-[1680px] w-full mx-auto flex flex-col xl:flex-row relative z-10 flex-grow ${activeCategory === 'overview' ? 'px-4 py-6 md:px-6 md:py-8 gap-6' : 'px-0 pt-0 pb-28 md:px-6 md:py-8 md:gap-6'}`}>
         
         {/* ================= COLUMN 1: SIDEBAR (DESKTOP ONLY) ================= */}
         <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:shrink-0 transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'xl:w-0 xl:opacity-0 xl:mr-[-1.5rem]' : 'xl:w-72 xl:opacity-100'}`}>
@@ -204,18 +204,17 @@ function MainAppHub() {
         {/* ================= COLUMN 2: CENTER HUB ================= */}
         <div className={`flex-1 min-w-0 flex flex-col gap-4 transition-all duration-300 ease-in-out ${focusMode ? 'xl:max-w-5xl mx-auto w-full' : ''}`}>
 
-
           {/* ═══ PAGE CONTENT AREA (full-width, dock handles nav) ═══ */}
-          <div className="flex-1 min-w-0 flex flex-col gap-6">
+          <div className="flex-1 min-w-0 flex flex-col w-full">
 
             {/* ── MOBILE HORIZONTAL SIDEBAR (TOP) ── */}
-            <div className="xl:hidden w-full overflow-hidden">
+            <div className={`xl:hidden w-full overflow-hidden mb-6 ${activeCategory !== 'overview' ? 'px-4 mt-6 md:px-0 md:mt-0' : ''}`}>
               <Sidebar collapsed={false} isMobileMode={true} />
             </div>
 
             {/* ── OVERVIEW ── */}
             {activeCategory === 'overview' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full pb-28 md:pb-0">
                 <div className="col-span-1 lg:col-span-12"><QuickAddBar /></div>
                 <div className="col-span-1 lg:col-span-12"><RPGHeader /></div>
                 <div className="col-span-1 lg:col-span-12"><InsightPanel /></div>
@@ -230,35 +229,35 @@ function MainAppHub() {
                 </div>
               </div>
             )}
+            
+            {/* ── NATIVE FULL PAGE MODULES ── */}
             {activeCategory === 'tapestry' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-                <div className="col-span-1 lg:col-span-12"><LifeHeatmapCanvas /></div>
-              </div>
+              <div className="w-full animate-slide-up"><LifeHeatmapCanvas /></div>
             )}
             {activeCategory === 'productivity' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-                <div className="col-span-1 lg:col-span-12"><ProductivityModule /></div>
-              </div>
+              <div className="w-full animate-slide-up"><ProductivityModule /></div>
             )}
             {activeCategory === 'financials' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-                <div className="col-span-1 lg:col-span-12"><QuickAddBar /></div>
-                <div className="col-span-1 lg:col-span-12"><FinanceModule /></div>
+              <div className="w-full flex flex-col md:gap-6 animate-slide-up">
+                <div className="px-4 md:px-0 mb-6 md:mb-0"><QuickAddBar /></div>
+                <FinanceModule />
               </div>
             )}
             {activeCategory === 'survival' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full items-start">
-                <div className="col-span-1 lg:col-span-6"><SurvivalModule /></div>
-                <div className="col-span-1 lg:col-span-6"><SocialModule /></div>
+              <div className="w-full flex flex-col lg:flex-row items-start md:gap-6 animate-slide-up">
+                <div className="flex-1 w-full"><SurvivalModule /></div>
+                <div className="flex-1 w-full mt-6 lg:mt-0"><SocialModule /></div>
               </div>
             )}
             {activeCategory === 'notifications' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
-                <div className="col-span-1 lg:col-span-12"><NotificationHub /></div>
-              </div>
+              <div className="w-full animate-slide-up"><NotificationHub /></div>
             )}
-            {activeCategory === 'automation' && <AutomationHubTab />}
-            {activeCategory === 'analytics' && <PredictiveIntelligenceHub />}
+            {activeCategory === 'automation' && (
+              <div className="w-full animate-slide-up"><AutomationHubTab /></div>
+            )}
+            {activeCategory === 'analytics' && (
+              <div className="w-full animate-slide-up"><PredictiveIntelligenceHub /></div>
+            )}
 
           </div>{/* end PAGE CONTENT */}
         </div>{/* end COLUMN 2 */}

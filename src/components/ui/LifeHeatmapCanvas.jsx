@@ -40,7 +40,7 @@ export default function LifeHeatmapCanvas() {
 
   return (
     <div className="flex flex-col gap-6 w-full animate-slide-up">
-      <div className="glass-card overflow-hidden border-brand-200/50 shadow-lg bg-white/40 flex flex-col relative">
+      <div className="glass-card overflow-hidden border-brand-200/50 shadow-lg bg-white/40 flex flex-col relative rounded-none border-x-0 md:rounded-[var(--ui-card-radius)] md:border-x">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02] pointer-events-none mix-blend-overlay"></div>
         
         <HeatmapControls 
