@@ -19,7 +19,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
  *     mobileHidden?: boolean   — exclude from mobile tab bar
  *   }>
  */
-export default function FloatingDock({ items = [] }) {
+export default function FloatingDock({ items = [], isDrawerOpen = false }) {
   const navItems  = items.filter(i => i.type !== 'tool');
   const toolItems = items.filter(i => i.type === 'tool');
 
@@ -35,17 +35,17 @@ export default function FloatingDock({ items = [] }) {
       ═══════════════════════════════════════════════ */}
       <div
         id="floating-dock-mobile"
-        className="fixed bottom-4 left-0 right-0 flex justify-center z-[200] md:hidden px-4"
+        className={`fixed left-0 right-0 flex justify-center z-[200] md:hidden px-4 transition-all duration-500 cubic-bezier(0.34, 1.56, 0.64, 1) ${isDrawerOpen ? 'bottom-[-120px] opacity-0 pointer-events-none scale-95' : 'bottom-6 opacity-100 scale-100'}`}
       >
         <div
           style={{
-            background: 'rgba(255,255,255,0.85)',
-            backdropFilter: 'blur(20px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-            border: '1.5px solid rgba(255,255,255,0.4)',
-            boxShadow: '0 8px 32px rgba(15,23,42,0.12), 0 1px 0 rgba(255,255,255,0.6) inset',
+            background: 'rgba(255,255,255,0.92)',
+            backdropFilter: 'blur(24px) saturate(200%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(200%)',
+            border: '1px solid rgba(255,255,255,0.7)',
+            boxShadow: '0 12px 40px rgba(15,23,42,0.16), 0 1px 0 rgba(255,255,255,0.8) inset',
           }}
-          className="flex items-center justify-around gap-1 px-3 py-1.5 rounded-2xl w-full max-w-md"
+          className="flex items-center justify-between gap-1 px-2 py-2 rounded-[28px] w-full max-w-md"
         >
           {mobileItems.map(item => (
             <MobileTab key={item.id} item={item} />
@@ -67,19 +67,20 @@ function MobileTab({ item }) {
   return (
     <button
       onClick={item.onClick}
-      className="flex flex-col items-center justify-center p-2 rounded-xl cursor-pointer select-none relative focus:outline-none active:scale-90 transition-transform duration-100"
+      className="flex flex-col items-center justify-center p-2.5 rounded-[20px] cursor-pointer select-none relative focus:outline-none active:scale-95 transition-all duration-300 ease-out"
       aria-label={item.label}
       style={{
-        background: item.active ? 'rgba(99,102,241,0.1)' : 'transparent',
-        transition: 'background 0.2s',
+        background: item.active ? 'rgba(99,102,241,0.12)' : 'transparent',
+        transform: item.active ? 'translateY(-2px)' : 'none',
+        flex: 1,
       }}
     >
       {/* Icon */}
-      <div className="relative flex items-center justify-center" style={{ width: 24, height: 24 }}>
+      <div className="relative flex items-center justify-center" style={{ width: 30, height: 30 }}>
         {item.emoji ? (
           <span
-            className="leading-none select-none transition-all duration-200"
-            style={{ fontSize: item.active ? 20 : 18 }}
+            className="leading-none select-none transition-all duration-300"
+            style={{ fontSize: item.active ? 28 : 24, filter: item.active ? 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))' : 'none' }}
           >
             {item.emoji}
           </span>
@@ -87,10 +88,10 @@ function MobileTab({ item }) {
           <span
             style={{
               display: 'flex',
-              width: 18,
-              height: 18,
-              color: item.active ? '#6366f1' : '#94a3b8',
-              transition: 'color 0.15s',
+              width: 24,
+              height: 24,
+              color: item.active ? '#6366f1' : '#64748b',
+              transition: 'color 0.3s',
             }}
           >
             {React.cloneElement(item.icon, { style: { width: '100%', height: '100%' } })}
@@ -100,26 +101,26 @@ function MobileTab({ item }) {
         {/* Badge */}
         {item.badge > 0 && (
           <span
-            className="absolute -top-1 -right-1 min-w-[14px] h-3.5 px-0.5 rounded-full bg-rose-500 text-white font-black font-mono flex items-center justify-center border border-white leading-none text-[7px]"
+            className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-rose-500 text-white font-black font-mono flex items-center justify-center border-2 border-white leading-none text-[10px] shadow-sm"
           >
             {item.badge > 9 ? '9+' : item.badge}
           </span>
         )}
       </div>
 
-      {/* Active Dot */}
+      {/* Label (iOS style) */}
       <span
         style={{
-          display: 'block',
-          width: item.active ? 4 : 0,
-          height: item.active ? 4 : 0,
-          marginTop: 2,
-          borderRadius: '50%',
-          background: '#6366f1',
-          opacity: item.active ? 1 : 0,
-          transition: 'width 0.2s ease, height 0.2s ease, opacity 0.2s ease',
+          fontSize: 9.5,
+          fontWeight: item.active ? 800 : 600,
+          color: item.active ? '#6366f1' : '#94a3b8',
+          marginTop: 6,
+          transition: 'all 0.3s',
+          letterSpacing: '-0.02em',
         }}
-      />
+      >
+        {item.label.split(' ')[0]}
+      </span>
     </button>
   );
 }
