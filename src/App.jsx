@@ -195,8 +195,10 @@ function MainAppHub() {
       <div className="max-w-[1680px] w-full mx-auto px-4 py-6 md:px-6 md:py-8 flex flex-col xl:flex-row gap-6 relative z-10 flex-grow">
         
         {/* ================= COLUMN 1: SIDEBAR (DESKTOP ONLY) ================= */}
-        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:shrink-0 xl:transition-[width] xl:duration-300 xl:ease-in-out ${sidebarCollapsed ? 'xl:w-[72px]' : 'xl:w-72'}`}>
-          <Sidebar collapsed={sidebarCollapsed} />
+        <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:shrink-0 transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'xl:w-0 xl:opacity-0 xl:mr-[-1.5rem]' : 'xl:w-72 xl:opacity-100'}`}>
+          <div className="w-72">
+            <Sidebar />
+          </div>
         </div>
 
         {/* ================= COLUMN 2: CENTER HUB ================= */}
