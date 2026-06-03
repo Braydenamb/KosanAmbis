@@ -196,11 +196,17 @@ html, body {
   background-attachment: fixed;
   color: var(--color-slate-700);
   font-family: 'Inter', sans-serif;
-  font-size: 16px; /* Standard 16px to fix huge scaling issues */
+  font-size: 16px; /* Standard 16px to fix huge scaling issues on mobile */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   transition: background 1200ms cubic-bezier(0.4, 0, 0.2, 1), color 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 1280px) {
+  html, body {
+    font-size: 18px; /* Kembalikan proporsi besar yang memadati layar di Desktop (XL) */
+  }
 }
 
 /* ── SYSTEMIC DARK THEME OVERRIDES ── */

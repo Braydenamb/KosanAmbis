@@ -192,7 +192,7 @@ function MainAppHub() {
       </header>
 
       {/* 5. MAIN CENTRAL CONTENT LAYOUT CONTAINER */}
-      <div className={`max-w-[1440px] w-full mx-auto flex flex-col xl:flex-row relative z-10 flex-grow ${activeCategory === 'overview' ? 'px-4 py-6 md:px-6 md:py-8 gap-6' : 'px-0 pt-0 pb-28 md:px-6 md:py-8 md:gap-6'}`}>
+      <div className={`max-w-[1680px] w-full mx-auto flex flex-col xl:flex-row relative z-10 flex-grow ${activeCategory === 'overview' ? 'px-4 py-6 md:px-6 md:py-8 gap-6' : 'px-0 pt-0 pb-28 md:px-6 md:py-8 md:gap-6'}`}>
         
         {/* ================= COLUMN 1: SIDEBAR (DESKTOP ONLY) ================= */}
         <div className={`hidden xl:block ${focusMode ? 'xl:hidden' : ''} xl:sticky xl:top-24 xl:self-start xl:max-h-[calc(100vh-8rem)] xl:overflow-y-auto overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] xl:shrink-0 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${sidebarCollapsed || activeCategory !== 'overview' ? 'xl:w-0 xl:opacity-0 xl:mr-[-1.5rem]' : 'xl:w-72 xl:opacity-100'}`}>
