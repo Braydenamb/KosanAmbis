@@ -330,7 +330,7 @@ function MainAppHub() {
             setShowLeftDrawer(false);
             setShowRightDrawer(false);
           }}
-          className="fixed inset-0 bg-slate-900/10 backdrop-blur-sm z-[110] xl:hidden"
+          className="fixed inset-0 bg-slate-900/10 z-[110] xl:hidden"
         />
       )}
 
